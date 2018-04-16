@@ -40,7 +40,7 @@ public class Maze {
                     System.out.print('E');
                 else
                     System.out.print(maze[i][j]);
-                if (j!=maze[0].length)
+                if (j!=maze[0].length-1)
                     System.out.print(' ');
             }
             System.out.println();

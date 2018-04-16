@@ -7,15 +7,16 @@ import java.util.Random;
 
 public class RunMazeGenerator {
     public static void main(String[] args) {
-        /*SimpleMazeGenerator smg = new SimpleMazeGenerator();
+        SimpleMazeGenerator smg = new SimpleMazeGenerator();
         Maze m = smg.generate(5,5);
-        for (int i = 0; i <5 ; i++) {
-            for (int j = 0; j <5 ; j++) {
+        /*for (int i = 0; i <m.getMaze().length ; i++) {
+            for (int j = 0; j <m.getMaze()[i].length ; j++) {
                 System.out.print(m.getMaze()[i][j]+" ");
 
             }
             System.out.println();
         }*/
+        m.Print();
         Position position = new Position(1,2);
         Position n = position.clone();
 
