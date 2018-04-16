@@ -1,6 +1,9 @@
 package algorithms.mazeGenerators;
 
 public class Maze {
+    //The data structure that represent the maze
+    private int[][] maze;
+
     public Maze(int[][] maze) {
         this.maze = maze;
     }
@@ -9,5 +12,9 @@ public class Maze {
         return maze.clone();//check
     }
 
-    private int[][] maze;
+
+    public Position getStartPosition()
+    {
+        return null;
+    }
 }
