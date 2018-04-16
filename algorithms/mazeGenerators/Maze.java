@@ -29,4 +29,21 @@ public class Maze {
     {
         return goal_position.clone();
     }
+
+    public void Print()
+    {
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j <maze[0].length; j++) {
+                if(start_position.equals(i,j))
+                    System.out.print('S');
+                else if (goal_position.equals(i,j))
+                    System.out.print('E');
+                else
+                    System.out.print(maze[i][j]);
+                if (j!=maze[0].length)
+                    System.out.print(' ');
+            }
+            System.out.println();
+        }
+    }
 }
