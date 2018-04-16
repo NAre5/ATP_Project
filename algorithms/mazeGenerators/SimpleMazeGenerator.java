@@ -27,6 +27,6 @@ public class SimpleMazeGenerator extends AMazeGenerator{
             simple_maze[i][j] = 0;
         }
 
-        return new Maze(simple_maze);
+        return new Maze(simple_maze,new Position(0,0),new Position(rows-1,columns-1));
     }
 }
