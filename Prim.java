@@ -11,14 +11,18 @@ public class Prim {
         for (int x = 0; x < c; x++)
             s.append('*');
         char[][] maz = new char[r][c];
-        for (int x = 0; x < r; x++) maz[x] = s.toString().toCharArray();
+        for (int x = 0; x < r; x++)
+            maz[x] = s.toString().toCharArray();
+        /////////////////////////////////////////////////////////////////////////////////////////
 
         // select random point and open as start node
-        Point st = new Point((int)(Math.random() * r), (int)(Math.random() * c), null);
+        //Point st = new Point((int)(Math.random() * r), (int)(Math.random() * c), null);
+        Point st = new Point(0,0, null);
+
         maz[st.r][st.c] = 'S';
 
         // iterate through direct neighbors of node
-        ArrayList < Point > frontier = new ArrayList < Point > ();
+        ArrayList < Point > frontier = new ArrayList <> ();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 if (x == 0 && y == 0 || x != 0 && y != 0)

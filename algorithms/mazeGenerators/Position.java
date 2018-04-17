@@ -13,9 +13,17 @@ public class Position implements Cloneable{
 
     private int ColumnIndex;
 
+    private Position parent;
+
     public Position(int RowIndex, int ColumnIndex) {
         this.RowIndex = RowIndex;
         this.ColumnIndex = ColumnIndex;
+    }
+
+    public Position(int RowIndex, int ColumnIndex, Position parent)
+    {
+        this(RowIndex,ColumnIndex);
+        this.parent=parent;
     }
 
     @Override
@@ -31,5 +39,15 @@ public class Position implements Cloneable{
     @Override
     public String toString() {
         return "{"+RowIndex+","+ColumnIndex+"}";
+    }
+
+    public Position opposite() {
+        Integer r=RowIndex,c=ColumnIndex;
+        Integer pr=parent.RowIndex,pc=parent.ColumnIndex;
+        if (r.compareTo(pr) != 0)
+            return new Position(r + r.compareTo(pr), c, this);
+        if (c.compareTo(pc) != 0)
+            return new Position(r, c + c.compareTo(pc), this);
+        return null;
     }
 }
