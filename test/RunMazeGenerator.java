@@ -18,7 +18,7 @@ public class RunMazeGenerator {
         }*/
         m.Print();
         Position position = new Position(1,2);
-        Position n = position.clone();
+        System.out.println(position);
 
     }
 }

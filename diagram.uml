@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="311.0">algorithms.search.SearchableMaze</node>
+    <node x="166.0" y="79.0">algorithms.search.DepthFirstSearch</node>
+    <node x="284.0" y="385.0">algorithms.search.AState</node>
+    <node x="75.25" y="0.0">algorithms.search.ISearchingAlgorithm</node>
+    <node x="9.5" y="158.0">algorithms.search.BestFirstSearch</node>
+    <node x="147.0" y="385.0">algorithms.search.Solution</node>
+    <node x="0.0" y="385.0">algorithms.search.MazeState</node>
+    <node x="12.5" y="232.0">algorithms.search.ISearchable</node>
+    <node x="0.0" y="79.0">algorithms.search.BreadthFirstSearch</node>
+    <node x="178.0" y="232.0">algorithms.search.ASearchingAlgorithm</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="algorithms.search.SearchableMaze" target="algorithms.search.ISearchable">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="algorithms.search.BreadthFirstSearch" target="algorithms.search.ISearchingAlgorithm">
+      <point x="0.0" y="-14.5" />
+      <point x="73.0" y="54.0" />
+      <point x="114.5" y="54.0" />
+      <point x="-39.25" y="14.5" />
+    </edge>
+    <edge source="algorithms.search.DepthFirstSearch" target="algorithms.search.ISearchingAlgorithm">
+      <point x="0.0" y="-14.5" />
+      <point x="234.5" y="54.0" />
+      <point x="193.0" y="54.0" />
+      <point x="39.25" y="14.5" />
+    </edge>
+    <edge source="algorithms.search.BestFirstSearch" target="algorithms.search.BreadthFirstSearch">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="0.0" y="0.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

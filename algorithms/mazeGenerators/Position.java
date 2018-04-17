@@ -1,26 +1,35 @@
 package algorithms.mazeGenerators;
 
 public class Position implements Cloneable{
-    public int x;
-    public int y;
+    private int RowIndex;
 
-    public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public int getRowIndex() {
+        return RowIndex;
+    }
+
+    public int getColumnIndex() {
+        return ColumnIndex;
+    }
+
+    private int ColumnIndex;
+
+    public Position(int RowIndex, int ColumnIndex) {
+        this.RowIndex = RowIndex;
+        this.ColumnIndex = ColumnIndex;
     }
 
     @Override
     public Position clone() {
-        return new Position(x,y);
+        return new Position(RowIndex, ColumnIndex);
     }
 
     public boolean equals(int x,int y)
     {
-        return (this.x==x) && (this.y==y);
+        return (this.RowIndex ==x) && (this.ColumnIndex ==y);
     }
 
-    public boolean equals(Position other)
-    {
-        return (this.x==other.x) && (this.y==other.y);
+    @Override
+    public String toString() {
+        return "{"+RowIndex+","+ColumnIndex+"}";
     }
 }
