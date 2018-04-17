@@ -13,6 +13,7 @@ public class Maze {
         this.maze = maze.clone();
         this.start_position = start_position.clone();
         this.goal_position = goal_position.clone();
+
     }
 
     public int[][] getMaze() {
