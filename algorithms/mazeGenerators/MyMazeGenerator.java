@@ -1,6 +1,7 @@
 package algorithms.mazeGenerators;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MyMazeGenerator extends AMazeGenerator {
     /**
@@ -16,11 +17,19 @@ public class MyMazeGenerator extends AMazeGenerator {
                 maze[i][j] = 1;
             }
         }
-        Position start = new Position((int)(Math.random() * rows), (int)(Math.random() * columns), null);
+        Random rand = new Random();
+        boolean vertical_flag = (rand.nextInt(10)+1)%2==1;
+        boolean horizontal_flag = (rand.nextInt(10)+1)%2==1;//change name
+
+        Position start = new Position(vertical_flag?(horizontal_flag?0:rows-1):(int)(Math.random() * rows),
+                vertical_flag?(int)(Math.random() * columns):(horizontal_flag?0:columns-1), null);
 
         ArrayList< Position > frontier = new ArrayList <> ();
 
-        func(frontier,maze,start);
+        //change function name
+        for (Position position : getCloseWalls(maze, start)) {
+            frontier.add(position);
+        }
 
         Position last = null;
 
@@ -44,20 +53,21 @@ public class MyMazeGenerator extends AMazeGenerator {
                         last = opposite.clone();
 
                         // iterate through direct neighbors of node, same as earlier
-                        func(frontier,maze,opposite);
+
+                        for (Position position : getCloseWalls(maze, opposite)) {
+                            frontier.add(position);
+                        }
                     }
                 }
             } catch (Exception e) { // ignore NullPointer and ArrayIndexOutOfBounds
             }
-            if (frontier.isEmpty())
-                System.out.println();
         }
-        System.out.println();
         return new Maze(maze,start,last);
     }
 
-    private void func(ArrayList<Position> frontier, int[][] maze, Position position)
+    private ArrayList< Position > getCloseWalls(int[][] maze, Position position)
     {
+        ArrayList< Position > frontier = new ArrayList <> ();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 if (x == 0 && y == 0 || x != 0 && y != 0)
@@ -72,6 +82,7 @@ public class MyMazeGenerator extends AMazeGenerator {
                 frontier.add(new Position(position.getRowIndex() + x, position.getColumnIndex() + y, position));
             }
         }
+        return frontier;
     }
 
 

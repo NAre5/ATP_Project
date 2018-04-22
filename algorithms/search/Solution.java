@@ -3,8 +3,23 @@ package algorithms.search;
 import java.util.ArrayList;
 
 public class Solution {
+    AState finalState;
+
+    public Solution(AState finalState) {
+        this.finalState = finalState;
+    }
+
     public ArrayList<AState> getSolutionPath()
     {
-        return null;
+        if (finalState==null)
+            return null;
+        ArrayList<AState> SolutionPath = new ArrayList<>();
+        AState currentState = finalState;
+        while (currentState!=null)
+        {
+            SolutionPath.add(currentState.clone());
+            currentState = currentState.prevState;
+        }
+        return SolutionPath;
     }
 }

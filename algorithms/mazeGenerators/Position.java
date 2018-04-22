@@ -18,6 +18,7 @@ public class Position implements Cloneable{
     public Position(int RowIndex, int ColumnIndex) {
         this.RowIndex = RowIndex;
         this.ColumnIndex = ColumnIndex;
+        parent=null;
     }
 
     public Position(int RowIndex, int ColumnIndex, Position parent)
@@ -34,6 +35,12 @@ public class Position implements Cloneable{
     public boolean equals(int x,int y)
     {
         return (this.RowIndex ==x) && (this.ColumnIndex ==y);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj !=null && obj instanceof Position &&
+                this.RowIndex == ((Position) obj).RowIndex && this.ColumnIndex == ((Position) obj).ColumnIndex;
     }
 
     @Override

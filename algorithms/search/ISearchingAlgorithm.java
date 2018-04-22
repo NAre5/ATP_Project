@@ -17,5 +17,5 @@ public interface ISearchingAlgorithm {
      *
      * @return
      */
-    String getNumberOfNodesEvaluated();
+    int getNumberOfNodesEvaluated();//check if ok with %s
 }

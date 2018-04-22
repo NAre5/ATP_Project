@@ -1,6 +1,6 @@
 package algorithms.search;
 
-public class DepthFirstSearch implements ISearchingAlgorithm{
+public class DepthFirstSearch extends ASearchingAlgorithm{
     /**
      * @param iSearchable
      * @return
@@ -18,11 +18,4 @@ public class DepthFirstSearch implements ISearchingAlgorithm{
         return "Depth First Search";
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public String getNumberOfNodesEvaluated() {
-        return null;
-    }
 }
