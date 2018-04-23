@@ -30,6 +30,7 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
                 this.NumberOfNodesEvaluated++;
                 visitedStates.add((current.toString()));
                 states.addAll(iSearchable.getAllPossibleStates(current));
+
             }
         }
         return new Solution(null);
