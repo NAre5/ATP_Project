@@ -1,7 +1,8 @@
 package algorithms.search;
 
-public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
-    protected Integer NumberOfNodesEvaluated=null;
+public abstract class ASearchingAlgorithm implements ISearchingAlgorithm {
+    protected Integer NumberOfNodesEvaluated = null;
+
     /**
      * @param iSearchable
      * @return
@@ -19,9 +20,10 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
      * @return
      */
     @Override
-    public int getNumberOfNodesEvaluated(){
+    public int getNumberOfNodesEvaluated() {
         //if (NumberOfNodesEvaluated==null)
         //    throw new Exception("");
         return NumberOfNodesEvaluated;
     }
 }
+

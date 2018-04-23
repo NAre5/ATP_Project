@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class DepthFirstSearch extends ASearchingAlgorithm{
+public class DepthFirstSearch extends ASearchingAlgorithm {
     /**
      * @param iSearchable
      * @return
@@ -18,15 +18,12 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
         start = iSearchable.getStartState();
         goal = iSearchable.getGoalState();
         states.push(start);
-        while (!states.empty())
-        {
+        while (!states.empty()) {
             AState current = states.pop();
-            if(goal.equals(current))
-            {
+            if (goal.equals(current)) {
                 return new Solution(current);
             }
-            if(!visitedStates.contains(current.toString()))
-            {
+            if (!visitedStates.contains(current.toString())) {
                 this.NumberOfNodesEvaluated++;
                 visitedStates.add((current.toString()));
                 states.addAll(iSearchable.getAllPossibleStates(current));

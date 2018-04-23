@@ -2,7 +2,6 @@ package algorithms.search;
 
 public interface ISearchingAlgorithm {
     /**
-     *
      * @param iSearchable
      * @return
      */
@@ -14,7 +13,6 @@ public interface ISearchingAlgorithm {
     String getName();
 
     /**
-     *
      * @return
      */
     int getNumberOfNodesEvaluated();//check if ok with %s

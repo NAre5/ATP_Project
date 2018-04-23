@@ -17,4 +17,5 @@ public interface IMazeGenerator {
      * @return the time that takes the function 'generate to run
      */
     long measureAlgorithmTimeMillis(int rows, int columns);
+
 }

@@ -6,22 +6,24 @@ import algorithms.mazeGenerators.Position;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchableMaze implements ISearchable {
+public class SearchableMaze implements ISearchable{
     private Maze maze;
 
     @Override
     public AState getStartState() {
-        return new MazeState(maze.getStartPosition(), null);
+        return new MazeState(maze.getStartPosition(),null,0);
     }
 
     @Override
     public AState getGoalState() {
-        return new MazeState(maze.getGoalPosition(), null);
+        return new MazeState(maze.getGoalPosition(),null,0);
     }
 
     public SearchableMaze(Maze maze) {
-        this.maze = maze;
+        this.maze=maze;
     }
+
+
 
     /**
      * @param state
@@ -35,7 +37,7 @@ public class SearchableMaze implements ISearchable {
             return null;
 
 
-        Position mPosition = ((MazeState) state).getCurrent_position();
+        Position mPosition = ((MazeState)state).getCurrent_position();
         List<AState> PossibleStates = new ArrayList<>();
         int[][] m = maze.getMaze();
 
@@ -46,11 +48,17 @@ public class SearchableMaze implements ISearchable {
                 try {
                     if (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex() + y] == 1)
                         continue;
+                    //check
+                    if(((Math.abs(x)+Math.abs(y))==2) && (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex()] == 1)
+                            &&(m[mPosition.getRowIndex()][mPosition.getColumnIndex() + y] == 1))
+                        continue;
                 } catch (Exception e) { // ignore ArrayIndexOutOfBounds
                     continue;
                 }
+
                 Position position = new Position(mPosition.getRowIndex() + x, mPosition.getColumnIndex() + y, mPosition);
-                PossibleStates.add(new MazeState(position, state));
+                //double c = state.getCost()+((Math.abs(x)+Math.abs(y))==2?Math.sqrt(2):1);
+                PossibleStates.add(new MazeState(position,state,state.getCost()+((Math.abs(x)+Math.abs(y))==2?Math.sqrt(2):1)));
             }
         }
 

@@ -25,4 +25,5 @@ public abstract class AMazeGenerator implements IMazeGenerator{
         Time = System.currentTimeMillis() - Time;
         return Time;
     }
+
 }
