@@ -11,12 +11,12 @@ public class SearchableMaze implements ISearchable{
 
     @Override
     public AState getStartState() {
-        return new MazeState(maze.getStartPosition(),null);
+        return new MazeState(maze.getStartPosition(),null,0);
     }
 
     @Override
     public AState getGoalState() {
-        return new MazeState(maze.getGoalPosition(),null);
+        return new MazeState(maze.getGoalPosition(),null,0);
     }
 
     public SearchableMaze(Maze maze) {
@@ -48,11 +48,16 @@ public class SearchableMaze implements ISearchable{
                 try {
                     if (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex() + y] == 1)
                         continue;
+                    //check
+                    if(((Math.abs(x)+Math.abs(y))==2) && (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex()] == 1)
+                            &&(m[mPosition.getRowIndex()][mPosition.getColumnIndex() + y] == 1))
+                        continue;
                 } catch (Exception e) { // ignore ArrayIndexOutOfBounds
                     continue;
                 }
+
                 Position position = new Position(mPosition.getRowIndex() + x, mPosition.getColumnIndex() + y, mPosition);
-                PossibleStates.add(new MazeState(position,state));
+                PossibleStates.add(new MazeState(position,state,state.getCost()+(Math.abs(x)+Math.abs(y))==2?Math.sqrt(2):1));
             }
         }
 

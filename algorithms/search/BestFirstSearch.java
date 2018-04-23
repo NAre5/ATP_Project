@@ -6,6 +6,8 @@ public class BestFirstSearch extends BreadthFirstSearch{
 
     public BestFirstSearch() {
         states = new PriorityQueue<>();
+        tmp = new PriorityQueue<>();
+
     }
 
     @Override
