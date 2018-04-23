@@ -17,7 +17,7 @@ public class Solution {
         AState currentState = finalState;
         while (currentState!=null)
         {
-            SolutionPath.add(currentState.clone());
+            SolutionPath.add(0,currentState.clone());
             currentState = currentState.prevState;
         }
         return SolutionPath;

@@ -2,6 +2,7 @@ package algorithms.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
     /**
@@ -11,6 +12,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
     @Override
     public Solution solve(ISearchable iSearchable) {
         //exception or return null
+        Stack<Integer> s;
         AState start,goal;
         List<AState> nextStates,currentStates;
         List<String> allStates = new ArrayList<>();

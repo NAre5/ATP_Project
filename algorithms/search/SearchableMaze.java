@@ -33,6 +33,9 @@ public class SearchableMaze implements ISearchable{
     public List<AState> getAllPossibleStates(AState state) /*throws Exception*/ {
         //if (!(state instanceof MazeState))
         //    throw new Exception("");
+        if (!(state instanceof MazeState))
+            return null;
+
 
         Position mPosition = ((MazeState)state).getCurrent_position();
         List<AState> PossibleStates = new ArrayList<>();
