@@ -8,11 +8,9 @@ import java.util.Queue;
 public class BreadthFirstSearch extends ASearchingAlgorithm {
 
     protected Queue<AState> states;
-    protected Queue<AState> tmp;
 
     public BreadthFirstSearch() {
         states = new LinkedList<>();
-        tmp = new LinkedList<>();
     }
 
     /**
@@ -22,16 +20,18 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
     @Override
     public Solution solve(ISearchable iSearchable) {
         //exception or return null
-        NumberOfNodesEvaluated = 0;
-        AState start, goal;
+        AState start,goal;
+        List<AState> nextStates,currentStates;
         List<String> allStates = new ArrayList<>();
         try {
             start = iSearchable.getStartState();
             goal = iSearchable.getGoalState();
 
-            //states.addAll(iSearchable.getAllPossibleStates(start));
+            states.addAll(iSearchable.getAllPossibleStates(start));
             states.add(start);
 
+//            currentStates= iSearchable.getAllPossibleStates(start);
+//            currentStates.add(start);
         } catch (Exception e) {
             states.clear();
             return null;
@@ -40,6 +40,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
         while (!states.isEmpty()) {
             AState state = states.poll();
             if (goal.equals(state)) {
+                this.NumberOfNodesEvaluated =0;/////////////////////
                 states.clear();
                 return new Solution(state);
             }
@@ -47,13 +48,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
                 allStates.add(state.toString());
                 states.addAll(iSearchable.getAllPossibleStates(state));
             }
-            this.NumberOfNodesEvaluated++;
 
-
-            tmp.addAll(states);
-            while (!tmp.isEmpty())
-                System.out.print(tmp.poll()+",");
-            System.out.println("");
         }
         states.clear();/////////////////////
         return null;//or new Solution(null)

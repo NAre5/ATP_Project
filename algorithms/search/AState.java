@@ -13,8 +13,8 @@ public abstract class AState implements Comparable<AState>{
     public double getCost() {
         return cost;
     }
-
     abstract public String toString();
+
     abstract public boolean equals(Object obj);
     abstract public int compareTo(AState o);
     abstract protected AState clone();

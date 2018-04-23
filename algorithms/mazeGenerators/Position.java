@@ -3,6 +3,10 @@ package algorithms.mazeGenerators;
 public class Position implements Cloneable{
     private int RowIndex;
 
+    private int ColumnIndex;
+
+    private Position parent;
+
     public int getRowIndex() {
         return RowIndex;
     }
@@ -11,9 +15,6 @@ public class Position implements Cloneable{
         return ColumnIndex;
     }
 
-    private int ColumnIndex;
-
-    private Position parent;
 
     public Position(int RowIndex, int ColumnIndex) {
         this.RowIndex = RowIndex;

@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Maze {
     public static final char PASSAGE_CHAR = ' ';
-    public static final char WALL_CHAR = '▓';
+    public static final char WALL_CHAR ='|'; //'▓';
     public static final boolean WALL    = false;
     public static final boolean PASSAGE = !WALL;
 
@@ -61,6 +61,6 @@ public class Maze {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Maze(10,10).toString());
+        System.out.println(new Maze(15,15).toString());
     }
 }
