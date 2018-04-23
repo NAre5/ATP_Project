@@ -1,10 +1,18 @@
 package algorithms.search;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+import java.util.Queue;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
+
+    protected Queue<AState> states;
+
+    public BreadthFirstSearch() {
+        states = new LinkedList<>();
+    }
+
     /**
      * @param iSearchable
      * @return
@@ -12,43 +20,38 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
     @Override
     public Solution solve(ISearchable iSearchable) {
         //exception or return null
-        Stack<Integer> s;
         AState start,goal;
         List<AState> nextStates,currentStates;
         List<String> allStates = new ArrayList<>();
         try {
             start = iSearchable.getStartState();
             goal = iSearchable.getGoalState();
-            currentStates= iSearchable.getAllPossibleStates(start);
-            currentStates.add(start);
+
+            states.addAll(iSearchable.getAllPossibleStates(start));
+            states.add(start);
+
+//            currentStates= iSearchable.getAllPossibleStates(start);
+//            currentStates.add(start);
         } catch (Exception e) {
+            states.clear();
             return null;
         }
-        while (!currentStates.isEmpty())
+        //while (!currentStates.isEmpty())
+        while (!states.isEmpty())
         {
-            nextStates = new ArrayList<>();
-//            for (AState state : currentStates) {
-//                if (goal.equals(state))
-//                    return new Solution(state);
-//                if (!allStates.contains(state.toString())) {
-//                    allStates.add(state.toString());
-//                    nextStates.addAll(iSearchable.getAllPossibleStates(state));
-//                }
-//            }
-            for (int i = 0; i < currentStates.size(); i++) {
-                if (goal.equals(currentStates.get(i))) {
-                    this.NumberOfNodesEvaluated =0;/////////////////////
-                    return new Solution(currentStates.get(i));
-                }
-                if (!allStates.contains(currentStates.get(i).toString())) {
-                    allStates.add(currentStates.get(i).toString());
-                    nextStates.addAll(iSearchable.getAllPossibleStates(currentStates.get(i)));
-                }
+            AState state = states.poll();
+            if (goal.equals(state)) {
+                this.NumberOfNodesEvaluated =0;/////////////////////
+                states.clear();
+                return new Solution(state);
+            }
+            if (!allStates.contains(state.toString())) {
+                allStates.add(state.toString());
+                states.addAll(iSearchable.getAllPossibleStates(state));
             }
 
-            currentStates=nextStates;
         }
-
+        states.clear();/////////////////////
         return null;//or new Solution(null)
     }
 
