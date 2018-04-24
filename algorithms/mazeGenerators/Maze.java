@@ -31,7 +31,7 @@ public class Maze {
         return goal_position.clone();
     }
 
-    public void Print()
+    public void print()
     {
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j <maze[0].length; j++) {
