@@ -7,13 +7,14 @@ import java.util.Queue;
 
 public class Test {
     public static void main(String[] args) {
-        Queue<Integer> list = new PriorityQueue<>();
-        list.add(9);
-        list.add(7);
-        list.add(5);
-        System.out.println(list);
-        System.out.println(list.poll());
-        System.out.println(list.poll());
-        System.out.println(list.poll());
+//        Queue<Integer> list = new PriorityQueue<>();
+//        list.add(9);
+//        list.add(7);
+//        list.add(5);
+//        System.out.println(list);
+//        System.out.println(list.poll());
+//        System.out.println(list.poll());
+//        System.out.println(list.poll());
+        System.out.println((char)27 + "[31m" + "ERROR MESSAGE IN RED");
     }
 }

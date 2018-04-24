@@ -1,5 +1,10 @@
 package algorithms.mazeGenerators;
 
+import algorithms.search.AState;
+import algorithms.search.MazeState;
+
+import java.util.List;
+
 /**
  * This class represents maze - A maze is a path or collection of paths, typically from an entrance to a goal.
  */
@@ -13,35 +18,42 @@ public class Maze {
         this.maze = maze.clone();
         this.start_position = start_position.clone();
         this.goal_position = goal_position.clone();
-
     }
 
+    /**
+     * @return clone of the maze
+     */
     public int[][] getMaze() {
         return maze.clone();//check
     }
 
-
-    public Position getStartPosition()
-    {
+    /**
+     * @return clone of the starting position
+     */
+    public Position getStartPosition() {
         return start_position.clone();
     }
 
-    public Position getGoalPosition()
-    {
+    /**
+     * @return clone of the goal position
+     */
+    public Position getGoalPosition() {
         return goal_position.clone();
     }
 
-    public void print()
-    {
+    /**
+     * Prints the maze as: 0 for passage, 1 for wall, S for the starting position and E for the goal position
+     */
+    public void print() {
         for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j <maze[0].length; j++) {
-                if(start_position.equals(i,j))
+            for (int j = 0; j < maze[0].length; j++) {
+                if (start_position.equals(i, j))
                     System.out.print('S');
-                else if (goal_position.equals(i,j))
+                else if (goal_position.equals(i, j))
                     System.out.print('E');
                 else
                     System.out.print(maze[i][j]);
-                if (j!=maze[0].length-1)
+                if (j != maze[0].length - 1)
                     System.out.print(' ');
             }
             System.out.println();

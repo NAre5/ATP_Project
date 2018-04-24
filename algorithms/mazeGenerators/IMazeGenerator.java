@@ -5,14 +5,16 @@ package algorithms.mazeGenerators;
  */
 public interface IMazeGenerator {
     /**
-     * @param rows - number of rows in the array
+     * Generates new maze
+     *
+     * @param rows    - number of rows in the array
      * @param columns - number of columns in the array
      * @return New maze with the requested rows and columns
      */
     Maze generate(int rows, int columns);
 
     /**
-     * @param rows - number of rows in the array
+     * @param rows    - number of rows in the array
      * @param columns - number of columns in the array
      * @return the time that takes the function 'generate to run
      */

@@ -3,8 +3,13 @@ package algorithms.mazeGenerators;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * this class represent a complex maze generator, using prim's algorithm.
+ */
 public class MyMazeGenerator extends AMazeGenerator {
     /**
+     * Generates new maze
+     *
      * @param rows    - number of rows in the array
      * @param columns - number of columns in the array
      * @return New maze with the requested rows and columns
@@ -18,15 +23,16 @@ public class MyMazeGenerator extends AMazeGenerator {
             }
         }
         Random rand = new Random();
-        boolean vertical_flag = (rand.nextInt(10)+1)%2==1;
-        boolean horizontal_flag = (rand.nextInt(10)+1)%2==1;//change name
+        boolean vertical_flag = (rand.nextInt(10) + 1) % 2 == 1;
+        boolean horizontal_flag = (rand.nextInt(10) + 1) % 2 == 1;//change name
 
-        Position start = new Position(vertical_flag?(horizontal_flag?0:rows-1):(int)(Math.random() * rows),
-                vertical_flag?(int)(Math.random() * columns):(horizontal_flag?0:columns-1), null);
+        Position start = new Position(vertical_flag ? (horizontal_flag ? 0 : rows - 1) : (int) (Math.random() * rows),
+                vertical_flag ? (int) (Math.random() * columns) : (horizontal_flag ? 0 : columns - 1), null);
 
-        ArrayList< Position > frontier = new ArrayList <> ();
+        maze[start.getRowIndex()][start.getColumnIndex()] = 0;
 
-        //change function name
+        ArrayList<Position> frontier = new ArrayList<>();
+
         for (Position position : getCloseWalls(maze, start)) {
             frontier.add(position);
         }
@@ -34,7 +40,6 @@ public class MyMazeGenerator extends AMazeGenerator {
         Position last = null;
 
         while (!frontier.isEmpty()) {
-
             // pick current node at random
             Position current = frontier.remove((int) (Math.random() * frontier.size()));
             Position opposite = current.opposite();
@@ -51,7 +56,6 @@ public class MyMazeGenerator extends AMazeGenerator {
 
                         // store last node in order to mark it later
                         last = opposite.clone();
-
                         // iterate through direct neighbors of node, same as earlier
 
                         for (Position position : getCloseWalls(maze, opposite)) {
@@ -61,13 +65,18 @@ public class MyMazeGenerator extends AMazeGenerator {
                 }
             } catch (Exception e) { // ignore NullPointer and ArrayIndexOutOfBounds
             }
+
         }
-        return new Maze(maze,start,last);
+        return new Maze(maze, start, last);
     }
 
-    private ArrayList< Position > getCloseWalls(int[][] maze, Position position)
-    {
-        ArrayList< Position > frontier = new ArrayList <> ();
+    /**
+     * @param maze     - the maze we want to search in
+     * @param position - the position we want to search from
+     * @return list of all the walls positions surrounding the given position in the given maze
+     */
+    private ArrayList<Position> getCloseWalls(int[][] maze, Position position) {
+        ArrayList<Position> frontier = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 if (x == 0 && y == 0 || x != 0 && y != 0)
