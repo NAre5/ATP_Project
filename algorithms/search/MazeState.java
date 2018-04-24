@@ -22,6 +22,7 @@ public class MazeState extends AState {
 
     }
 
+
     /**
      * @return clone of current position.
      */
