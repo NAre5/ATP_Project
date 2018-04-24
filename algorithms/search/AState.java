@@ -6,7 +6,7 @@ public abstract class AState implements Comparable<AState> {
 
     AState(AState prevState, double cost) {
         if (prevState != null)
-            this.prevState = prevState.clone();
+            this.prevState = prevState;
         this.cost = cost;
     }
 

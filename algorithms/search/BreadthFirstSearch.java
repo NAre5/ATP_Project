@@ -1,16 +1,13 @@
 package algorithms.search;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
 
     protected Queue<AState> states;
 
     public BreadthFirstSearch() {
-        states = new LinkedList<>();
+        states = new PriorityQueue<>();
     }
 
     /**
@@ -19,10 +16,13 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
      */
     @Override
     public Solution solve(ISearchable iSearchable) {
+        if(iSearchable == null)
+            return null;
         //exception or return null
         NumberOfNodesEvaluated = 0;
         AState start, goal;
-        List<String> allStates = new ArrayList<>();
+        HashSet<String> allStates = new HashSet<>();
+        //List<String> allStates = new ArrayList<>();
         try {
             start = iSearchable.getStartState();
             goal = iSearchable.getGoalState();
@@ -44,12 +44,13 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
             if (!allStates.contains(state.toString())) {
                 this.NumberOfNodesEvaluated++;
                 allStates.add(state.toString());
+                states.addAll((iSearchable.getAllPossibleStates(state)));
                 //states.addAll(iSearchable.getAllPossibleStates(state));
-                for (AState aState : iSearchable.getAllPossibleStates(state)) {
-                    if (!allStates.contains(aState.toString())) {
-                        states.add(aState);
-                    }
-                }
+                //for (AState aState : iSearchable.getAllPossibleStates(state)) {
+                  //  if (!allStates.contains(aState.toString())) {
+                    //    states.add(aState);
+                    //}
+                //}
             }
         }
         states.clear();/////////////////////

@@ -6,7 +6,7 @@ import algorithms.mazeGenerators.Position;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchableMaze implements ISearchable{
+public class SearchableMaze implements ISearchable {
     private Maze maze;
 
     @Override
@@ -20,10 +20,8 @@ public class SearchableMaze implements ISearchable{
     }
 
     public SearchableMaze(Maze maze) {
-        this.maze=maze;
+        this.maze = maze;
     }
-
-
 
     /**
      * @param state
@@ -45,20 +43,21 @@ public class SearchableMaze implements ISearchable{
             for (int y = -1; y <= 1; y++) {
                 if (x == 0 && y == 0)
                     continue;
+                boolean isDiagonal = false;
                 try {
                     if (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex() + y] == 1)
                         continue;
+                    isDiagonal = ((Math.abs(x)+Math.abs(y))==2);
                     //check
-                    if(((Math.abs(x)+Math.abs(y))==2) && (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex()] == 1)
+                    if(isDiagonal && (m[mPosition.getRowIndex() + x][mPosition.getColumnIndex()] == 1)
                             &&(m[mPosition.getRowIndex()][mPosition.getColumnIndex() + y] == 1))
                         continue;
                 } catch (Exception e) { // ignore ArrayIndexOutOfBounds
                     continue;
                 }
-
                 Position position = new Position(mPosition.getRowIndex() + x, mPosition.getColumnIndex() + y, mPosition);
                 //double c = state.getCost()+((Math.abs(x)+Math.abs(y))==2?Math.sqrt(2):1);
-                PossibleStates.add(new MazeState(position,state,state.getCost()+((Math.abs(x)+Math.abs(y))==2?Math.sqrt(2):1)));
+                PossibleStates.add(new MazeState(position,state,state.getCost()+(isDiagonal?Math.sqrt(2):1)));
             }
         }
 
