@@ -49,9 +49,10 @@ public class SearchableMaze implements ISearchable {
         Position mPosition = ((MazeState) state).getCurrent_position();
         List<AState> PossibleStates = new ArrayList<>();//contain all possible state from state.
         int[][] m = maze.getMaze();
+        int counter = 0;
         //search in the surrounding cells.
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
+        for (int y = 1; y >= -1; y--) {
+            for (int x = -1; x <= 1; x++) {
                 if (x == 0 && y == 0)//this is the param state.
                     continue;
                 boolean isDiagonal = false;
@@ -66,7 +67,8 @@ public class SearchableMaze implements ISearchable {
                     continue;
                 }
                 Position position = new Position(mPosition.getRowIndex() + x, mPosition.getColumnIndex() + y, mPosition);//legal postion that can be reached from state.
-                PossibleStates.add(new MazeState(position, state, state.getCost() + (isDiagonal ? Math.sqrt(2) : 1)));
+                PossibleStates.add(isDiagonal ? PossibleStates.size() : counter, new MazeState(position, state, state.getCost() + (isDiagonal ? Math.sqrt(2) : 1)));
+                counter = isDiagonal ? counter : ++counter;
             }
         }
         return PossibleStates;

@@ -58,7 +58,7 @@ public class MazeState extends AState {
     public int compareTo(AState o) {
         if (!(o instanceof MazeState))
             return 0;
-        return Double.compare(getCost() - prevState.getCost(), o.getCost() - o.prevState.getCost());
+        return Double.compare(getCost(), o.getCost());
     }
 
 }

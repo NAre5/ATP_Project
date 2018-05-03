@@ -16,6 +16,12 @@ public class SimpleMazeGenerator extends AMazeGenerator {
      */
     @Override
     public Maze generate(int rows, int columns) {
+        if(rows<=0||columns<=0)
+        {
+            System.out.println("Maze size must be positive. 3X3 default maze has been created.");
+            rows=3;
+            columns=3;
+        }
         Random rn = new Random();
         int[][] simple_maze = new int[rows][columns];
         for (int i = 0; i < rows; i++) {

@@ -16,6 +16,12 @@ public class MyMazeGenerator extends AMazeGenerator {
      */
     @Override
     public Maze generate(int rows, int columns) {
+        if(rows<=0||columns<=0)
+        {
+            System.out.println("Maze size must be positive. 3X3 default maze has been created.");
+            rows=3;
+            columns=3;
+        }
         int[][] maze = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -37,7 +43,7 @@ public class MyMazeGenerator extends AMazeGenerator {
             frontier.add(position);
         }
 
-        Position last = null;
+        Position last = start.clone();
 
         while (!frontier.isEmpty()) {
             // pick current node at random
@@ -67,6 +73,10 @@ public class MyMazeGenerator extends AMazeGenerator {
             }
 
         }
+//        if(last==null)
+//        {
+//            if()
+//        }
         return new Maze(maze, start, last);
     }
 
