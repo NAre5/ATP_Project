@@ -23,6 +23,7 @@ public class RunCommunicateWithServers {
         Server solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
         //Server stringReverserServer = new Server(5402, 1000, new ServerStrategyStringReverser());
 
+        //
         //Starting  servers
         solveSearchProblemServer.start();
         mazeGeneratingServer.start();
