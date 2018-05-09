@@ -4,6 +4,7 @@ import algorithms.search.AState;
 import algorithms.search.MazeState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -127,5 +128,10 @@ public class Maze {
         }
         return bytes;
 
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(toByteArray());
     }
 }

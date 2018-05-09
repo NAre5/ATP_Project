@@ -14,4 +14,9 @@ public class MyDecompressorInputStream extends InputStream{
     public int read() throws IOException {
         return 0;
     }
+
+    @Override
+    public int read(byte[] b) throws IOException {
+        return super.read(b);
+    }
 }

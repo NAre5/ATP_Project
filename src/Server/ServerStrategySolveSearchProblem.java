@@ -1,6 +1,13 @@
 package Server;
 
 
+import IO.MyDecompressorInputStream;
+import algorithms.mazeGenerators.Maze;
+import algorithms.search.DepthFirstSearch;
+import algorithms.search.ISearchingAlgorithm;
+import algorithms.search.SearchableMaze;
+import algorithms.search.Solution;
+
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,10 +25,17 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
-            ObjectInputStream inputStream = new ObjectInputStream(inFromClient);
-            ObjectOutputStream outputStream = new ObjectOutputStream(outToClient);
-            int[] Size_Coordinates = (int[])inputStream.readObject();
+            MyDecompressorInputStream inputStream = new MyDecompressorInputStream(inFromClient);
+            Maze maze = new Maze(inputStream.readAllBytes());
+            SearchableMaze searchableMaze = new SearchableMaze(maze);
+            ISearchingAlgorithm searcher = new DepthFirstSearch();
+            Solution solution = searcher.solve(searchableMaze);
 
+
+            ObjectOutputStream outputStream = new ObjectOutputStream(outToClient);
+            outputStream.writeObject(solution);
+            //save the solution for the specific maze
+            String tempDirectoryPath = System.getProperty("java.io.tmpdir");
 
         }catch (Exception ignored)
         {

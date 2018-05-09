@@ -1,9 +1,11 @@
 package algorithms.mazeGenerators;
 
+import java.io.Serializable;
+
 /**
  * this class represent a position in a two dimensional space
  */
-public class Position implements Cloneable {
+public class Position implements Cloneable,Serializable {
     private int RowIndex;
 
     private int ColumnIndex;

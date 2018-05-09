@@ -1,11 +1,14 @@
 package algorithms.search;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class represent a solution of problem.
  */
-public class Solution {
+public class Solution implements Serializable{
     AState finalState;
 
     /**
@@ -31,4 +34,5 @@ public class Solution {
         }
         return SolutionPath;
     }
+
 }
