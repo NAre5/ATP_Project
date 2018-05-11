@@ -1,10 +1,12 @@
 package algorithms.search;
 
+import java.io.Serializable;
+
 /**
  * This class represent a state in the problem. i.e. represent the current position of the player and allowing to get
  * the next possible states.
  */
-public abstract class AState implements Comparable<AState> {
+public abstract class AState implements Comparable<AState>, Serializable{
     protected AState prevState;// Through which state we reached to this state. Help to reproduce the solution.
     private double cost;//What is the cost to get this state.
 

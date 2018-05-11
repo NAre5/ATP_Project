@@ -26,14 +26,14 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
             MyDecompressorInputStream inputStream = new MyDecompressorInputStream(inFromClient);
-            Maze maze = new Maze(inputStream.readAllBytes());
-            SearchableMaze searchableMaze = new SearchableMaze(maze);
-            ISearchingAlgorithm searcher = new DepthFirstSearch();
-            Solution solution = searcher.solve(searchableMaze);
+//            Maze maze = new Maze(inputStream.readAllBytes());
+//            SearchableMaze searchableMaze = new SearchableMaze(maze);
+//            ISearchingAlgorithm searcher = new DepthFirstSearch();
+//            Solution solution = searcher.solve(searchableMaze);
 
 
             ObjectOutputStream outputStream = new ObjectOutputStream(outToClient);
-            outputStream.writeObject(solution);
+//            outputStream.writeObject(solution);
             //save the solution for the specific maze
             String tempDirectoryPath = System.getProperty("java.io.tmpdir");
 

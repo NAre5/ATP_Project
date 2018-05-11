@@ -35,4 +35,12 @@ public class Solution implements Serializable{
         return SolutionPath;
     }
 
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof Solution)
+        {
+            return this.getSolutionPath().equals(((Solution)obj).getSolutionPath());
+        }
+        return false;
+    }
 }

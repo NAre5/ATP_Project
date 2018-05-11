@@ -7,7 +7,9 @@ import algorithms.mazeGenerators.Position;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -17,13 +19,7 @@ public class Test {
     public static void main(String[] args) {
 
         //System.out.println(Arrays.toString(decompress(compress(mich))));
-        String s = "";
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            s+="1";
-        }
-        long decimal = Integer.parseInt(s, 2);
-        String hex = Long.toString(decimal);
-        System.out.println(hex);
+        String a = "1010101";
     }
 
     //public static void kich()

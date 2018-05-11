@@ -74,7 +74,8 @@ public class Maze {
         compressed.addAll(IntToByteList(maze[0].length));
         compressed.add((byte) 0);
 
-        boolean switch_flag = false;
+        // need to be in MyCompreeser
+        /*boolean switch_flag = false;
         int last_bit = 0;
         byte counter = 0;
         for (int[] row : maze) {
@@ -95,6 +96,13 @@ public class Maze {
             }
         }
         compressed.add(counter);
+        */
+        for (int[] row : maze) {
+            for (int cell : row) {
+                compressed.add((byte)cell);
+            }
+        }
+
         compressed.add((byte) 0);
         compressed.add((byte) 0);
 

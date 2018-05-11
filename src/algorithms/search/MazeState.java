@@ -3,10 +3,12 @@ package algorithms.search;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 
+import java.io.Serializable;
+
 /**
  * This class extend AState. It is represent state of maze. The representation is by the current position of the player.
  */
-public class MazeState extends AState {
+public class MazeState extends AState implements Serializable {
     private Position current_position;//THe current position in the maze;
 
     /**
