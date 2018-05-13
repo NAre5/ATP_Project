@@ -3,6 +3,7 @@ package algorithms.mazeGenerators;
 import algorithms.search.AState;
 import algorithms.search.MazeState;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,12 +18,35 @@ public class Maze {
     private Position goal_position;
 
     public Maze(int[][] maze, Position start_position, Position goal_position) {
+        assert maze != null && maze.length != 0;/////////////////////////////////////////
         this.maze = maze.clone();
         this.start_position = start_position.clone();
         this.goal_position = goal_position.clone();
     }
 
     public Maze(byte[] savedMazeBytes) {
+        int[] sizes = new int[6];
+        int i = 0;
+        int sum = 0;
+        for (int counter = 0; counter < 6; ) {
+            sum += savedMazeBytes[i++];
+
+            if (savedMazeBytes[i] == 0) {
+                sizes[counter++] = sum;
+                sum = 0;
+                i++;
+            }
+        }
+
+        this.maze = new int[sizes[0]][sizes[1]];
+        for (int r = 0; r < sizes[0]; r++) {
+            for (int c = 0; c < sizes[2]; c++) {
+                maze[r][c] = savedMazeBytes[i++];
+            }
+
+        }
+        this.start_position = new Position(sizes[2],sizes[3]);
+        this.goal_position = new Position(sizes[4],sizes[5]);
     }
 
     /**
@@ -73,7 +97,14 @@ public class Maze {
         compressed.add((byte) 0);
         compressed.addAll(IntToByteList(maze[0].length));
         compressed.add((byte) 0);
-
+        compressed.addAll(IntToByteList(this.start_position.getRowIndex()));
+        compressed.add((byte) 0);
+        compressed.addAll(IntToByteList(this.start_position.getColumnIndex()));
+        compressed.add((byte) 0);
+        compressed.addAll(IntToByteList(this.goal_position.getRowIndex()));
+        compressed.add((byte) 0);
+        compressed.addAll(IntToByteList(this.goal_position.getColumnIndex()));
+        compressed.add((byte) 0);
         // need to be in MyCompreeser
         /*boolean switch_flag = false;
         int last_bit = 0;
@@ -99,21 +130,14 @@ public class Maze {
         */
         for (int[] row : maze) {
             for (int cell : row) {
-                compressed.add((byte)cell);
+                compressed.add((byte) cell);
             }
         }
 
-        compressed.add((byte) 0);
-        compressed.add((byte) 0);
+//        compressed.add((byte) 0);
+//        compressed.add((byte) 0);
 
-        compressed.addAll(IntToByteList(this.start_position.getRowIndex()));
-        compressed.add((byte) 0);
-        compressed.addAll(IntToByteList(this.start_position.getColumnIndex()));
-        compressed.add((byte) 0);
-        compressed.addAll(IntToByteList(this.goal_position.getRowIndex()));
-        compressed.add((byte) 0);
-        compressed.addAll(IntToByteList(this.goal_position.getColumnIndex()));
-        compressed.add((byte) 0);
+
         //check one change from list to byte array
         return toPrimitives(compressed.toArray(new Byte[compressed.size()]));
     }
