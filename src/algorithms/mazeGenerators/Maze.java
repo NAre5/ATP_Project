@@ -29,7 +29,7 @@ public class Maze {
         int i = 0;
         int sum = 0;
         for (int counter = 0; counter < 6; ) {
-            sum += savedMazeBytes[i++];
+            sum += savedMazeBytes[i++]& 0xFF;
 
             if (savedMazeBytes[i] == 0) {
                 sizes[counter++] = sum;
@@ -38,15 +38,16 @@ public class Maze {
             }
         }
 
-        this.maze = new int[sizes[0]][sizes[1]];
-        for (int r = 0; r < sizes[0]; r++) {
-            for (int c = 0; c < sizes[2]; c++) {
+        int startRow = sizes[0], startColumn = sizes[1];
+        int goalRow = sizes[2], goalColumn = sizes[3];
+        this.maze = new int[sizes[4]+Math.max(startRow, goalRow)][sizes[5]+Math.max(startColumn, goalColumn)];
+        for (int r = 0; r < sizes[4]+Math.max(startRow, goalRow); r++) {
+            for (int c = 0; c < sizes[5]+Math.max(startColumn, goalColumn); c++) {
                 maze[r][c] = savedMazeBytes[i++];
             }
-
         }
-        this.start_position = new Position(sizes[2],sizes[3]);
-        this.goal_position = new Position(sizes[4],sizes[5]);
+        this.start_position = new Position(sizes[0],sizes[1]);
+        this.goal_position = new Position(sizes[2],sizes[3]);
     }
 
     /**
@@ -93,10 +94,6 @@ public class Maze {
         //byte[] size_row = new byte[(int) Math.ceil(maze.length/255)];
         //byte[] size_column = new byte[(int) Math.ceil(maze[0].length/255)];
         List<Byte> compressed = new ArrayList<Byte>();
-        compressed.addAll(IntToByteList(maze.length));
-        compressed.add((byte) 0);
-        compressed.addAll(IntToByteList(maze[0].length));
-        compressed.add((byte) 0);
         compressed.addAll(IntToByteList(this.start_position.getRowIndex()));
         compressed.add((byte) 0);
         compressed.addAll(IntToByteList(this.start_position.getColumnIndex()));
@@ -105,6 +102,11 @@ public class Maze {
         compressed.add((byte) 0);
         compressed.addAll(IntToByteList(this.goal_position.getColumnIndex()));
         compressed.add((byte) 0);
+        compressed.addAll(IntToByteList(maze.length - Math.max(this.start_position.getRowIndex(),this.goal_position.getRowIndex())));
+        compressed.add((byte) 0);
+        compressed.addAll(IntToByteList(maze[0].length - Math.max(this.start_position.getColumnIndex(),this.goal_position.getColumnIndex())));
+        compressed.add((byte) 0);
+
         // need to be in MyCompreeser
         /*boolean switch_flag = false;
         int last_bit = 0;

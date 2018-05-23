@@ -1,25 +1,70 @@
 package test;
 
+import IO.BitInputStream;
+import IO.BitOutputStream;
+import IO.HuffmanTree;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
+import java.nio.file.Files;
 
 public class Test {
     public static void main(String[] args) {
 
+//        try {
+//            DataInputStream dataInputStream = new DataInputStream(new FileInputStream("filename"));
+//            DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream("filename"));
+//            dataOutputStream.write((byte)5);
+//            System.out.println(dataInputStream.available());
+//            int c = dataInputStream.read();
+//            System.out.println(c);
+//            c = dataInputStream.read();
+//            System.out.println(c);
+//            System.out.println(dataInputStream.available());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        byte[] arr = new byte[5];
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arr);
+
         //System.out.println(Arrays.toString(decompress(compress(mich))));
-        String a = "1010101";
+        //System.out.println(((int)Math.ceil((double) 59/8)));
+        BitOutputStream outputStream = new BitOutputStream("filename");
+        outputStream.writeBits(8,64);
+        outputStream.writeBits(8,160);
+        outputStream.writeBits(8,3);
+        //outputStream.writeBits(3,3);
+        outputStream.close();
+        BitInputStream inputStream = new BitInputStream("filename");
+        //HuffmanTree huffmanTree = new HuffmanTree(inputStream);
+        while (true)
+        {
+            try {
+                int bit=inputStream.readBits(8);
+                if (bit==-1)
+                    return;
+                System.out.println(bit);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
+        inputStream.close();
+
+
     }
 
     //public static void kich()
