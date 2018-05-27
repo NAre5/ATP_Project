@@ -38,14 +38,8 @@ public class HuffmanTree {
     }
 
     public HuffmanTree(BitInputStream bis) {
-        try {
-            while (bis.available()==1)
-                System.out.println(bis.readBits(1));
-            //root = ReadNode(bis);
-        }catch (IOException e)
-        {
+        root = ReadNode(bis);
 
-        }
     }
 
     Node ReadNode(BitInputStream reader) {
@@ -88,7 +82,7 @@ public class HuffmanTree {
         answer[k - 1] = 0;
         for (int i = k; i < answer.length - 1; i++) {
             //answer[i] = buffer[i - 1];
-            answer[i] = buffer[i];
+            answer[i] = buffer[i-k];
             //System.out.println(answer[i] & 0xFF);
         }
         //answer[0] = num_of_nodes;
@@ -140,10 +134,10 @@ public class HuffmanTree {
         }
     }
 
-    public List<Byte> getCoded_data(BitInputStream bis) {
+    public List<Byte> getCoded_data(BitInputStream bis) throws IOException {
         List<Byte> answer = new LinkedList<>();
         Node current = root;
-        while (true) {
+        while (bis.available()==1) {
             if (current==null)
                 System.out.println("im null");
             if (current.IsLeafNode()) {
@@ -154,16 +148,17 @@ public class HuffmanTree {
                 int  bit = bis.readBits(1);
                 if (bit == 0)
                     current = current.LeftChild;
-                else if(bit == -1)
-                {
-                    return answer;
-                }
+//                else if(bit == -1)
+//                {
+//                    return answer;
+//                }
                 else
                     current = current.RightChild;
             } catch (IOException e) {
                 return answer;
             }
         }
+        return answer;
     }
 }
 

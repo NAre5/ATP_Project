@@ -28,6 +28,7 @@ public class MyDecompressorInputStream extends InputStream {
         i++;
         String filename = "bits";
         BitOutputStream bitOutputStream = new BitOutputStream(filename);
+        System.out.println("Reads:");
         for (int j = 0; j < size - 2; j++) {
             int value = b[i + j] & 0xFF;
             System.out.println(value);
@@ -36,10 +37,11 @@ public class MyDecompressorInputStream extends InputStream {
         int last_value = (b[i + size - 2]&0xFF) >> ((8 - (b[i + size - 1]&0xFF))&0xFF);
         System.out.println(last_value);
         bitOutputStream.writeBits(b[i + size - 1]&0xFF, last_value);
+        bitOutputStream.close();
         BitInputStream bitInputStream = new BitInputStream(filename);
-
         HuffmanTree huffmanTree = new HuffmanTree(bitInputStream);
         //check if file is empty
+        bitInputStream.reset();
         for (i = i + size; i < len - 2; i++)
             bitOutputStream.writeBits(8, b[i]&0xFF);
         bitOutputStream.writeBits(b[i + 1], (b[i]&0xFF) >> ((8 - (b[i + 1]&0xFF))&0xFF));

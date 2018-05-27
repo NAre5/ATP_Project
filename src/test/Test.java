@@ -21,6 +21,13 @@ import java.nio.file.Files;
 public class Test {
     public static void main(String[] args) {
 
+        byte[] b = {14,7};
+        int bit_index=0;
+        for (int i = 0; i < b.length*8; i++) {
+            System.out.println((byte)((b[i/8]&0xFF)<<bit_index)>>(7-bit_index));
+            bit_index = (bit_index+1)%8;
+        }
+
 //        try {
 //            DataInputStream dataInputStream = new DataInputStream(new FileInputStream("filename"));
 //            DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream("filename"));
@@ -35,7 +42,7 @@ public class Test {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
+        /*
         byte[] arr = new byte[5];
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arr);
 
@@ -63,7 +70,7 @@ public class Test {
             }
         }
         inputStream.close();
-
+*/
 
     }
 

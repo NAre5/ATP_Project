@@ -51,6 +51,10 @@ public class MyCompressorOutputStream extends OutputStream {
         List<Byte> answer = new LinkedList<>();
         answer.addAll(huffmanTree.getCompressedTree());
         answer.addAll(huffmanTree.getCompressedData());
+        System.out.println("written:");
+        for (Byte _byte : answer) {
+            System.out.println(_byte);
+        }
         out.write(toPrimitives(answer.toArray(new Byte[answer.size()])));
     }
 
