@@ -9,12 +9,7 @@ import algorithms.search.BreadthFirstSearch;
 import algorithms.search.SearchableMaze;
 import algorithms.search.Solution;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 public class WriterReader {
@@ -29,9 +24,9 @@ public class WriterReader {
         for (int i = 0; i < solutionPath.size(); i++) {
             System.out.println(String.format("%s. %s", i, solutionPath.get(i)));
         }
-        Position p1 = new Position( 30, 40);
-
-        Position p2 = new Position( 31, 41);
+//        Position p1 = new Position( 30, 40);
+//
+//        Position p2 = new Position( 31, 41);
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
@@ -41,7 +36,8 @@ public class WriterReader {
             oos.close();
 
             // read object from file
-            FileInputStream fis = new FileInputStream("mybean.txt");
+            File file = new File("mybean.txt");
+            FileInputStream fis = new FileInputStream(file.getPath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             Solution result = (Solution) ois.readObject();
             ois.close();

@@ -8,10 +8,7 @@ import algorithms.search.ISearchingAlgorithm;
 import algorithms.search.SearchableMaze;
 import algorithms.search.Solution;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
@@ -24,21 +21,34 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
      */
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
+        File theDir = new File("Solutions");
+        theDir.mkdir();
         try {
-            MyDecompressorInputStream inputStream = new MyDecompressorInputStream(inFromClient);
-//            Maze maze = new Maze(inputStream.readAllBytes());
-//            SearchableMaze searchableMaze = new SearchableMaze(maze);
-//            ISearchingAlgorithm searcher = new DepthFirstSearch();
-//            Solution solution = searcher.solve(searchableMaze);
+            Maze maze = (Maze) ((ObjectInputStream) inFromClient).readObject();
+            File solution_file = new File("Solutions/" + maze.hashCode());
+            if (solution_file.exists()) {
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(solution_file.getPath()));
+                Solution result = (Solution) ois.readObject();
+                ois.close();
+                ((ObjectOutputStream) outToClient).writeObject(result);
+            } else {
+                SearchableMaze searchableMaze = new SearchableMaze(maze);
+                ISearchingAlgorithm searcher = new DepthFirstSearch();
+                Solution solution = searcher.solve(searchableMaze);
 
+//                solution_file.getParentFile().mkdirs();
+//                solution_file.createNewFile();
+                ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(solution_file));
+                outputStream.writeObject(solution);
+                outputStream.close();
+                ((ObjectOutputStream) outToClient).writeObject(solution);
+            }
 
-            ObjectOutputStream outputStream = new ObjectOutputStream(outToClient);
 //            outputStream.writeObject(solution);
             //save the solution for the specific maze
-            String tempDirectoryPath = System.getProperty("java.io.tmpdir");
+//            String tempDirectoryPath = System.getProperty("java.io.tmpdir");
 
-        }catch (Exception ignored)
-        {
+        } catch (Exception ignored) {
 
         }
 

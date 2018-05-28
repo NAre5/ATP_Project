@@ -47,6 +47,7 @@ public class RunCommunicateWithServers {
                     try {
                         ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                         ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
+
                         toServer.flush();
                         int[] mazeDimensions = new int[]{50, 50};
                         toServer.writeObject(mazeDimensions); //send maze dimensions to server

@@ -8,11 +8,13 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
 
+import javax.print.attribute.standard.QueuedJobCount;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -20,57 +22,20 @@ import java.nio.file.Files;
 
 public class Test {
     public static void main(String[] args) {
+        PriorityQueue<Double> doubles = new PriorityQueue<>();
+        doubles.add((double)13/12);
+        doubles.add((double)(1));
+        doubles.add((double)45/4);
+        doubles.add((double)28/22);
+        doubles.add((double)30/17);
+        doubles.add((double)40/20);
+        doubles.add((double)48/15);
+        doubles.add((double)10/11);
 
-        byte[] b = {14,7};
-        int bit_index=0;
-        for (int i = 0; i < b.length*8; i++) {
-            System.out.println((byte)((b[i/8]&0xFF)<<bit_index)>>(7-bit_index));
-            bit_index = (bit_index+1)%8;
-        }
-
-//        try {
-//            DataInputStream dataInputStream = new DataInputStream(new FileInputStream("filename"));
-//            DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream("filename"));
-//            dataOutputStream.write((byte)5);
-//            System.out.println(dataInputStream.available());
-//            int c = dataInputStream.read();
-//            System.out.println(c);
-//            c = dataInputStream.read();
-//            System.out.println(c);
-//            System.out.println(dataInputStream.available());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        /*
-        byte[] arr = new byte[5];
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arr);
-
-        //System.out.println(Arrays.toString(decompress(compress(mich))));
-        //System.out.println(((int)Math.ceil((double) 59/8)));
-        BitOutputStream outputStream = new BitOutputStream("filename");
-        outputStream.writeBits(8,64);
-        outputStream.writeBits(8,160);
-        outputStream.writeBits(8,3);
-        //outputStream.writeBits(3,3);
-        outputStream.close();
-        BitInputStream inputStream = new BitInputStream("filename");
-        //HuffmanTree huffmanTree = new HuffmanTree(inputStream);
-        while (true)
-        {
-            try {
-                int bit=inputStream.readBits(8);
-                if (bit==-1)
-                    return;
-                System.out.println(bit);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                break;
-            }
-        }
-        inputStream.close();
-*/
+        while (!doubles.isEmpty())
+            System.out.println(doubles.poll());
+//        QueuedJobCount queuedJobCount = new QueuedJobCount(5);
+//        queuedJobCount.
 
     }
 
@@ -128,4 +93,6 @@ public class Test {
         byte[] decompressedData = bos.toByteArray();
         return decompressedData;
     }
+
+
 }
