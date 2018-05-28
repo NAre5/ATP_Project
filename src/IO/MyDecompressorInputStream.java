@@ -34,23 +34,38 @@ public class MyDecompressorInputStream extends InputStream {
             System.out.println(value);
             bitOutputStream.writeBits(8, value);
         }
-        int last_value = (b[i + size - 2]&0xFF) >> ((8 - (b[i + size - 1]&0xFF))&0xFF);
+        int last_value = (b[i + size - 2] & 0xFF) >> ((8 - (b[i + size - 1] & 0xFF)) & 0xFF);
         System.out.println(last_value);
-        bitOutputStream.writeBits(b[i + size - 1]&0xFF, last_value);
+        bitOutputStream.writeBits(b[i + size - 1] & 0xFF, last_value);
         bitOutputStream.close();
         BitInputStream bitInputStream = new BitInputStream(filename);
         HuffmanTree huffmanTree = new HuffmanTree(bitInputStream);
         //check if file is empty
-        bitInputStream.reset();
+//        bitInputStream.reset();
         for (i = i + size; i < len - 2; i++)
-            bitOutputStream.writeBits(8, b[i]&0xFF);
-        bitOutputStream.writeBits(b[i + 1], (b[i]&0xFF) >> ((8 - (b[i + 1]&0xFF))&0xFF));
+            bitOutputStream.writeBits(8, b[i] & 0xFF);
+        bitOutputStream.writeBits(b[i + 1], (b[i] & 0xFF) >> ((8 - (b[i + 1] & 0xFF)) & 0xFF));
+        bitInputStream.reset();
 
         List<Byte> decoded = huffmanTree.getCoded_data(bitInputStream);
 
-        int index=0;
+        int index = 0;
+        int discoverZero = 0;
         for (Byte _byte : decoded) {
-            b[index++]=_byte;
+            if (discoverZero < 6) {
+                if (_byte == 0)
+                    discoverZero++;
+                b[index++] = _byte;
+                continue;
+            }
+            String byteAsString = Integer.toBinaryString(_byte);
+            while(byteAsString.length()!=8)
+                byteAsString = '0'+byteAsString;
+            char[] byteAsArray = byteAsString.toCharArray();
+            for (int j = 0; j < 8; j++) {
+                b[index++] = (byte)(byteAsArray[i]-48);
+            }
+
         }
         return b.length;
         /*byte[] b_clone = b.clone();
