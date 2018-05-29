@@ -40,21 +40,28 @@ public class MyCompressorOutputStream extends OutputStream {
         byte[] comp_maze = new byte[(b.length - current_index + 7) / 8];
         int bit_index = 0;
         for (; current_index < b.length; current_index++, bit_index++) {
-            comp_maze[bit_index / 8] |= (b[current_index]&0xFF) << (7 - (bit_index % 8));
+            comp_maze[bit_index / 8] |= (b[current_index] & 0xFF) << (7 - (bit_index % 8));
         }
 
         for (byte _b : comp_maze) {
             compressed.add(_b);
             //System.out.println(_b&0xFF);
         }
+        compressed.add(bit_index%8==0?8:(byte)(bit_index%8));
+
         HuffmanTree huffmanTree = new HuffmanTree(compressed);
         List<Byte> answer = new LinkedList<>();
+//        System.out.println("written:");
         answer.addAll(huffmanTree.getCompressedTree());
+//        for (Byte aByte : huffmanTree.getCompressedTree()) {
+//            System.out.println(aByte);
+//        }
         answer.addAll(huffmanTree.getCompressedData());
-        System.out.println("written:");
-        for (Byte _byte : answer) {
-            System.out.println(_byte);
-        }
+//        System.out.println("and then");
+//        for (Byte aByte : huffmanTree.getCompressedData()) {
+//            System.out.println(aByte);
+//        }
+
         out.write(toPrimitives(answer.toArray(new Byte[answer.size()])));
     }
 

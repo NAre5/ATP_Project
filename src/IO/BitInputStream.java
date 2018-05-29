@@ -120,6 +120,11 @@ public class BitInputStream extends InputStream
         }
     }
 
+    @Override
+    public int available() throws IOException {
+        return myInput.available();
+    }
+
     /**
      * Returns the number of bits requested as rightmost bits in
      * returned value, returns -1 if not enough bits available to

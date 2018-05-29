@@ -24,47 +24,75 @@ public class MyDecompressorInputStream extends InputStream {
         int len = in.read(b);
         int i = 0, size = 0;
         while (b[i] != 0)
-            size += b[i++];
+            size += (b[i++]& 0xFF);
         i++;
         String filename = "bits";
         BitOutputStream bitOutputStream = new BitOutputStream(filename);
-        System.out.println("Reads:");
+//        System.out.println("Reads:");
         for (int j = 0; j < size - 2; j++) {
+//            System.out.println(b[i + j]);
             int value = b[i + j] & 0xFF;
-            System.out.println(value);
+
             bitOutputStream.writeBits(8, value);
         }
         int last_value = (b[i + size - 2] & 0xFF) >> ((8 - (b[i + size - 1] & 0xFF)) & 0xFF);
-        System.out.println(last_value);
+
         bitOutputStream.writeBits(b[i + size - 1] & 0xFF, last_value);
         bitOutputStream.close();
         BitInputStream bitInputStream = new BitInputStream(filename);
         HuffmanTree huffmanTree = new HuffmanTree(bitInputStream);
         //check if file is empty
-//        bitInputStream.reset();
-        for (i = i + size; i < len - 2; i++)
-            bitOutputStream.writeBits(8, b[i] & 0xFF);
-        bitOutputStream.writeBits(b[i + 1], (b[i] & 0xFF) >> ((8 - (b[i + 1] & 0xFF)) & 0xFF));
-        bitInputStream.reset();
-
-        List<Byte> decoded = huffmanTree.getCoded_data(bitInputStream);
-
+        bitInputStream.close();
+        BitOutputStream bitOutputStream2 = new BitOutputStream(filename + "2");
+//        System.out.println("and then");
+        int code_size = 0;
+        for (i = i + size; i < len - 2; i++) {
+//            System.out.println(b[i]);
+            bitOutputStream2.writeBits(8, b[i] & 0xFF);
+            code_size += 8;
+        }
+//        System.out.println((b[i] & 0xFF) >> ((8 - (b[i + 1] & 0xFF)) & 0xFF));
+//        System.out.println(b[i + 1]);
+        bitOutputStream2.writeBits(b[i + 1] == 0 ? 8 : b[i + 1], (b[i] & 0xFF) >> ((8 - (b[i + 1] == 0 ? 8 : b[i + 1]) & 0xFF)) & 0xFF);
+        code_size += b[i + 1] == 0 ? 8 : b[i + 1];
+        bitOutputStream2.close();
+        BitInputStream bitInputStream2 = new BitInputStream(filename + "2");
+        List<Byte> decoded = huffmanTree.getCoded_data(bitInputStream2, code_size);
+        Byte last = decoded.get(decoded.size() - 1);
+        decoded.remove(decoded.size() - 1);
+        Byte before_last = decoded.get(decoded.size() - 1);
+        decoded.remove(decoded.size() - 1);
         int index = 0;
         int discoverZero = 0;
+        boolean check = false;
         for (Byte _byte : decoded) {
             if (discoverZero < 6) {
-                if (_byte == 0)
-                    discoverZero++;
                 b[index++] = _byte;
+                if (!check) {
+                    check = true;
+                    continue;
+                }
+                if (check && _byte == 0) {
+                    discoverZero++;
+                    check = false;
+                }
                 continue;
             }
-            String byteAsString = Integer.toBinaryString(_byte);
-            while(byteAsString.length()!=8)
-                byteAsString = '0'+byteAsString;
+            String byteAsString = Integer.toBinaryString(_byte & 0xFF);
+            while (byteAsString.length() != 8)
+                byteAsString = '0' + byteAsString;
             char[] byteAsArray = byteAsString.toCharArray();
             for (int j = 0; j < 8; j++) {
-                b[index++] = (byte)(byteAsArray[i]-48);
+                b[index++] = (byte) (byteAsArray[j] - 48);
             }
+
+        }
+        String byteAsString = Integer.toBinaryString(before_last & 0xFF);
+        while (byteAsString.length() != 8)
+            byteAsString = '0' + byteAsString;
+        char[] byteAsArray = byteAsString.toCharArray();
+        for (int j = 0; j < last; j++) {
+            b[index++] = (byte) (byteAsArray[j] - 48);
 
         }
         return b.length;

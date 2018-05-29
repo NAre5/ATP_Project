@@ -146,7 +146,8 @@ public class Maze {
 
     private List<Byte> IntToByteList(int number) {
         List<Byte> ByteList = new ArrayList<>();
-        ByteList.add((byte) (number % 255));
+        if (number%255!=0 || number==0)
+            ByteList.add((byte) (number % 255));
         number -= number % 255;
         while (number > 0) {
             ByteList.add((byte) 255);
@@ -167,5 +168,5 @@ public class Maze {
     @Override
     public int hashCode() {
         return Arrays.hashCode(toByteArray());
-    }
+    }//check if really is hash(1<->1)
 }

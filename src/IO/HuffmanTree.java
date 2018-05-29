@@ -47,12 +47,11 @@ public class HuffmanTree {
             int bit = reader.readBits(1);
             if (bit == 1) {
                 return new Node((byte) reader.readBits(8), 0);
-            } else if (bit==0)
-            {
+            } else if (bit == 0) {
                 Node leftChild = ReadNode(reader);
                 Node rightChild = ReadNode(reader);
                 return new Node(null, leftChild, rightChild);
-            }else
+            } else
                 return null;//?
 
         } catch (IOException e) {
@@ -69,20 +68,22 @@ public class HuffmanTree {
         prettify_ugly_tree(buffer, bit_index, ugly_comp_tree.iterator());
         //Byte[] answer = new Byte[((bit_index[0] + 7) / 8) + 2];
         int size = (int) Math.ceil((double) bit_index[0] / 8) + 1;
-        int k = (int) Math.ceil((double) size / 255) + 1;
+
+        int k = ((int) Math.ceil((double) size / 255)) - ((size % 255 == 0 ) ? 1 : 0) + 1;//note that size!=0
         Byte[] answer = new Byte[size + k];
         //System.arraycopy(buffer, 0, answer, 0, answer.length - 1);
         //for (int i = 1; i < answer.length - 1; i++) {
-        answer[0] = (byte) (size % 255);
-        int iSize = size - size % 255;
-        for (int i = 1; i < k - 1; i++) {
+        if (size % 255 != 0)
+            answer[0] = (byte) (size % 255);
+        int iSize = size - (size % 255);
+        for (int i = 1 - (size % 255 == 0 ? 1 : 0); i < k - 1; i++) {
             answer[i] = (byte) 255;
             iSize -= 255;
         }
         answer[k - 1] = 0;
         for (int i = k; i < answer.length - 1; i++) {
             //answer[i] = buffer[i - 1];
-            answer[i] = buffer[i-k];
+            answer[i] = buffer[i - k];
             //System.out.println(answer[i] & 0xFF);
         }
         //answer[0] = num_of_nodes;
@@ -134,28 +135,30 @@ public class HuffmanTree {
         }
     }
 
-    public List<Byte> getCoded_data(BitInputStream bis) throws IOException {
+    public List<Byte> getCoded_data(BitInputStream bis, int code_size) throws IOException {
         List<Byte> answer = new LinkedList<>();
         Node current = root;
-        while (bis.available()==1) {
-            if (current==null)
-                System.out.println("im null");
-            if (current.IsLeafNode()) {
-                answer.add(current.Value);
-                current = root;
-            }
+        for (int i = 0; i < code_size; i++) {
+//            if (bis.available() == 0)
+//                System.out.println("pass");
+//            if (current == null)
+//                System.out.println("im null");
+
             try {
-                int  bit = bis.readBits(1);
+                int bit = bis.readBits(1);
                 if (bit == 0)
                     current = current.LeftChild;
-//                else if(bit == -1)
-//                {
-//                    return answer;
-//                }
-                else
+                else if (bit == -1) {
+                    return answer;
+                } else
                     current = current.RightChild;
             } catch (IOException e) {
                 return answer;
+            }
+            if (current.IsLeafNode()) {
+                answer.add(current.Value);
+                current = root;
+//                continue;
             }
         }
         return answer;

@@ -14,7 +14,7 @@ public class Client {
         this.clientStrategy = clientStrategy;
     }
 
-    public void communicateWithServer() {
+    public void communicateWithServer() {//not what need to be because its waits for input from the user
         try {
             Socket theServer = new Socket(serverIP, serverPort);
             System.out.println(String.format("Client is connected to server (IP: %s, port: %s)", serverIP, serverPort));
