@@ -2,6 +2,7 @@ package test;
 
 import IO.BitInputStream;
 import IO.BitOutputStream;
+import IO.Encoder;
 import IO.HuffmanTree;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
@@ -22,20 +23,11 @@ import java.nio.file.Files;
 
 public class Test {
     public static void main(String[] args) {
-        PriorityQueue<Double> doubles = new PriorityQueue<>();
-        doubles.add((double)13/12);
-        doubles.add((double)(1));
-        doubles.add((double)45/4);
-        doubles.add((double)28/22);
-        doubles.add((double)30/17);
-        doubles.add((double)40/20);
-        doubles.add((double)48/15);
-        doubles.add((double)10/11);
 
-        while (!doubles.isEmpty())
-            System.out.println(doubles.poll());
-//        QueuedJobCount queuedJobCount = new QueuedJobCount(5);
-//        queuedJobCount.
+        byte[] bytes = new byte[]{55,4,3,8,45,9};
+        System.out.println(Arrays.toString(bytes));
+        String arr = Arrays.toString(bytes);
+
 
     }
 
