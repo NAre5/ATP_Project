@@ -36,7 +36,7 @@ public class MyDecompressorInputStream extends InputStream {
             bitOutputStream.writeBits(8, value);
         }
         int last_value = (b[i + size - 2] & 0xFF) >> ((8 - (b[i + size - 1] & 0xFF)) & 0xFF);
-//        System.out.println(last_value);
+
         bitOutputStream.writeBits(b[i + size - 1] & 0xFF, last_value);
         bitOutputStream.close();
         BitInputStream bitInputStream = new BitInputStream(filename);
@@ -93,6 +93,7 @@ public class MyDecompressorInputStream extends InputStream {
         char[] byteAsArray = byteAsString.toCharArray();
         for (int j = 0; j < last; j++) {
             b[index++] = (byte) (byteAsArray[j] - 48);
+
         }
         return b.length;
         /*byte[] b_clone = b.clone();
