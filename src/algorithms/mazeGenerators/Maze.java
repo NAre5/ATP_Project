@@ -3,6 +3,7 @@ package algorithms.mazeGenerators;
 import algorithms.search.AState;
 import algorithms.search.MazeState;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * This class represents maze - A maze is a path or collection of paths, typically from an entrance to a goal.
  */
-public class Maze {
+public class Maze implements Serializable{
     //The data structure that represent the maze
     private int[][] maze;
     private Position start_position;

@@ -1,69 +1,132 @@
 package Server;
 
+import java.util.concurrent.ExecutorService;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Created by Aviadjo on 3/2/2017.
+ * This class implements runnable so we can use it in threadPool
  */
-public class Server {
-    private int port;
-    private int listeningInterval;
-    private IServerStrategy serverStrategy;
-    private volatile boolean stop;
-    // private static final Logger LOG = LogManager.getLogger(); //Log4j2
+class RunMaze implements Runnable{
 
-    public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
-        this.port = port;
-        this.listeningInterval = listeningInterval;
-        this.serverStrategy = serverStrategy;
+    private Socket clientSocket;//The serverSocket
+    private IServerStrategy serverStrategy;//The strategy
+
+    /**
+     * The constructor of the RunMaze
+     * @param socket - The given server socket
+     * @param strategy- The given strategy
+     */
+    public RunMaze(Socket socket,IServerStrategy strategy)
+    {
+        clientSocket=socket;
+        serverStrategy=strategy;
     }
 
-    public void start() {
-        new Thread(() -> {
-            runServer();
-        }).start();
-    }
-
-    private void runServer() {
-        try {
-            ServerSocket server = new ServerSocket(port);
-            server.setSoTimeout(listeningInterval);
-            //     LOG.info(String.format("Server started! (port: %s)", port));
-            while (!stop) {
-                try {
-                    Socket clientSocket = server.accept(); // blocking call
-                    //  LOG.info(String.format("Client excepted: %s", clientSocket.toString()));
-                    new Thread(() -> {
-                        handleClient(clientSocket);
-                    }).start();
-                } catch (SocketTimeoutException e) {
-                    //  LOG.debug("SocketTimeout - No clients pending!");
-                }
-            }
-            server.close();
-        } catch (IOException e) {
-            //  LOG.error("IOException", e);
-        }
-    }
+    /**
+     * This function will handle the client using the given strategy
+     * @param clientSocket - The clientSocket
+     */
 
     private void handleClient(Socket clientSocket) {
         try {
-            // LOG.debug("Client excepted!");
-            // LOG.debug(String.format("Handling client with socket: %s", clientSocket.toString()));
+
+            //Implementing the strategy
             serverStrategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
+            //Closing the streams of the client
             clientSocket.getInputStream().close();
             clientSocket.getOutputStream().close();
             clientSocket.close();
         } catch (IOException e) {
-            //LOG.error("IOException", e);
+
         }
     }
 
+    /**
+     * Summoning the handleClient function
+     */
+    public void run(){
+        handleClient(clientSocket);
+    }
+}
+
+/**
+ * This class will represent the server
+ */
+public class Server {
+    private int port;//The port
+    private int listeningInterval;//The listening intervals
+    private IServerStrategy serverStrategy;//The server strategy
+    private volatile boolean stop;//The variable that is responsible to stop the server
+
+
+    /**
+     * The constructor
+     * @param port - The given port
+     * @param listeningInterval - The listening intervals
+     * @param serverStrategy - The server strategy
+     */
+    public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
+        this.port = port;
+        this.listeningInterval = listeningInterval;
+        this.serverStrategy = serverStrategy;
+
+    }
+
+    /**
+     * This function will use a new thread to run the server
+     */
+    public void start() {
+        new Thread(() -> {
+            runServer();//Runs the server
+        }).start();
+    }
+
+    /**
+     * This function is responsible for the wat the server runs
+     */
+    private void runServer() {
+        //Initializing the threadPool
+        int threadPoolSize=Runtime.getRuntime().availableProcessors()*2;
+        ExecutorService executorService=Executors.newCachedThreadPool();
+        ThreadPoolExecutor threadPoolExecutor= (ThreadPoolExecutor)executorService;
+        threadPoolExecutor.setCorePoolSize(threadPoolSize);
+
+        try {
+            //Creating the server socket
+            ServerSocket server = new ServerSocket(port);
+            server.setSoTimeout(listeningInterval);
+
+            //As long as we don;t tell the server to stop
+            while (!stop) {
+                try {
+                    //The clientSocket of the client that is connecting to the server
+                    Socket clientSocket=server.accept();
+                    //Executing the client handler (adding the runnable to the threadPool and executing it)
+                    threadPoolExecutor.execute(new RunMaze(clientSocket,this.serverStrategy));
+                } catch (SocketTimeoutException e) {
+                    e.getStackTrace();
+                }
+            }
+
+            //Close the server
+            server.close();
+            threadPoolExecutor.shutdown();
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+    }
+
+
+    /**
+     * This function will stop the server's running.
+     */
     public void stop() {
-        //LOG.info("Stopping server..");
+
         stop = true;
     }
 }

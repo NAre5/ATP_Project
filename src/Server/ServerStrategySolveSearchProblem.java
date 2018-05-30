@@ -30,6 +30,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(solution_file.getPath()));
                 Solution result = (Solution) ois.readObject();
                 ois.close();
+                outToClient.flush();
                 ((ObjectOutputStream) outToClient).writeObject(result);
             } else {
                 SearchableMaze searchableMaze = new SearchableMaze(maze);
@@ -41,6 +42,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(solution_file));
                 outputStream.writeObject(solution);
                 outputStream.close();
+                outToClient.flush();
                 ((ObjectOutputStream) outToClient).writeObject(solution);
             }
 
