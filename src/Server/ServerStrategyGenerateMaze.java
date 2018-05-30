@@ -7,10 +7,7 @@ import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class ServerStrategyGenerateMaze implements IServerStrategy {
 
@@ -26,12 +23,15 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(inFromClient);
             ObjectOutputStream outputStream = new ObjectOutputStream(outToClient);
+            outputStream.flush();
             int[] size_Coordinates = (int[])inputStream.readObject();//catch error if not int[2]
             IMazeGenerator generator = new MyMazeGenerator();
             Maze maze = generator.generate(size_Coordinates[0],size_Coordinates[1]);
-            MyCompressorOutputStream out = new MyCompressorOutputStream(outputStream);
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            MyCompressorOutputStream out = new MyCompressorOutputStream(byteOut);
             //or MyCompressorOutputStream outputStream = new MyCompressorOutputStream(outToClient.clone);
             out.write(maze.toByteArray());
+            outputStream.writeObject(byteOut.toByteArray());
 //
         }catch (Exception ignored)
         {

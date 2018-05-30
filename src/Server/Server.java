@@ -11,48 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * This class implements runnable so we can use it in threadPool
  */
-class RunMaze implements Runnable{
 
-    private Socket clientSocket;//The serverSocket
-    private IServerStrategy serverStrategy;//The strategy
-
-    /**
-     * The constructor of the RunMaze
-     * @param socket - The given server socket
-     * @param strategy- The given strategy
-     */
-    public RunMaze(Socket socket,IServerStrategy strategy)
-    {
-        clientSocket=socket;
-        serverStrategy=strategy;
-    }
-
-    /**
-     * This function will handle the client using the given strategy
-     * @param clientSocket - The clientSocket
-     */
-
-    private void handleClient(Socket clientSocket) {
-        try {
-
-            //Implementing the strategy
-            serverStrategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
-            //Closing the streams of the client
-            clientSocket.getInputStream().close();
-            clientSocket.getOutputStream().close();
-            clientSocket.close();
-        } catch (IOException e) {
-
-        }
-    }
-
-    /**
-     * Summoning the handleClient function
-     */
-    public void run(){
-        handleClient(clientSocket);
-    }
-}
 
 /**
  * This class will represent the server
@@ -107,7 +66,7 @@ public class Server {
                     //The clientSocket of the client that is connecting to the server
                     Socket clientSocket=server.accept();
                     //Executing the client handler (adding the runnable to the threadPool and executing it)
-                    threadPoolExecutor.execute(new RunMaze(clientSocket,this.serverStrategy));
+                    threadPoolExecutor.execute(new ParallelServer(clientSocket,this.serverStrategy));
                 } catch (SocketTimeoutException e) {
                     e.getStackTrace();
                 }
@@ -128,5 +87,48 @@ public class Server {
     public void stop() {
 
         stop = true;
+    }
+
+    class ParallelServer implements Runnable{
+
+        private Socket clientSocket;//The serverSocket
+        private IServerStrategy serverStrategy;//The strategy
+
+        /**
+         * The constructor of the RunMaze
+         * @param socket - The given server socket
+         * @param strategy- The given strategy
+         */
+        public ParallelServer(Socket socket,IServerStrategy strategy)
+        {
+            clientSocket=socket;
+            serverStrategy=strategy;
+        }
+
+        /**
+         * This function will handle the client using the given strategy
+         * @param clientSocket - The clientSocket
+         */
+
+        private void handleClient(Socket clientSocket) {
+            try {
+
+                //Implementing the strategy
+                serverStrategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
+                //Closing the streams of the client
+                clientSocket.getInputStream().close();
+                clientSocket.getOutputStream().close();
+                clientSocket.close();
+            } catch (IOException e) {
+
+            }
+        }
+
+        /**
+         * Summoning the handleClient function
+         */
+        public void run(){
+            handleClient(clientSocket);
+        }
     }
 }

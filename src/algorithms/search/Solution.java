@@ -10,6 +10,7 @@ import java.util.Arrays;
  */
 public class Solution implements Serializable{
     AState finalState;
+    ArrayList<AState> SolutionPath;
 
     /**
      * c'tor
@@ -18,20 +19,27 @@ public class Solution implements Serializable{
      */
     public Solution(AState finalState) {
         this.finalState = finalState;
+        SolutionPath = new ArrayList<>();
+        AState currentState = finalState;
+        while (currentState != null) {//only the start position has null
+            SolutionPath.add(0, currentState);//the prev state of each state must be before him un the solution.
+            currentState = currentState.prevState;
+        }
     }
 
     /**
      * @return list of the level to the final solution.
      */
     public ArrayList<AState> getSolutionPath() {
-        if (finalState == null)
-            return null;
-        ArrayList<AState> SolutionPath = new ArrayList<>();
-        AState currentState = finalState;
-        while (currentState != null) {//only the start position has null
-            SolutionPath.add(0, currentState);//the prev state of each state must be before him un the solution.
-            currentState = currentState.prevState;
-        }
+//        if (finalState == null)
+//            return null;
+//        ArrayList<AState> SolutionPath = new ArrayList<>();
+//        AState currentState = finalState;
+//        while (currentState != null) {//only the start position has null
+//            SolutionPath.add(0, currentState);//the prev state of each state must be before him un the solution.
+//            currentState = currentState.prevState;
+//        }
+//        return SolutionPath;
         return SolutionPath;
     }
 

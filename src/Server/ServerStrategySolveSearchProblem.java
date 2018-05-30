@@ -3,10 +3,7 @@ package Server;
 
 import IO.MyDecompressorInputStream;
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.DepthFirstSearch;
-import algorithms.search.ISearchingAlgorithm;
-import algorithms.search.SearchableMaze;
-import algorithms.search.Solution;
+import algorithms.search.*;
 
 import java.io.*;
 
@@ -24,14 +21,16 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
         File theDir = new File("Solutions");
         theDir.mkdir();
         try {
-            Maze maze = (Maze) ((ObjectInputStream) inFromClient).readObject();
+            ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
+            ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
+            Maze maze = (Maze) fromClient.readObject();
             File solution_file = new File("Solutions/" + maze.hashCode());
             if (solution_file.exists()) {
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(solution_file.getPath()));
                 Solution result = (Solution) ois.readObject();
                 ois.close();
                 outToClient.flush();
-                ((ObjectOutputStream) outToClient).writeObject(result);
+                toClient.writeObject(result);
             } else {
                 SearchableMaze searchableMaze = new SearchableMaze(maze);
                 ISearchingAlgorithm searcher = new DepthFirstSearch();
@@ -43,12 +42,9 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 outputStream.writeObject(solution);
                 outputStream.close();
                 outToClient.flush();
-                ((ObjectOutputStream) outToClient).writeObject(solution);
+                toClient.writeObject(solution);
             }
-
-//            outputStream.writeObject(solution);
-            //save the solution for the specific maze
-//            String tempDirectoryPath = System.getProperty("java.io.tmpdir");
+            toClient.close();
 
         } catch (Exception ignored) {
 
