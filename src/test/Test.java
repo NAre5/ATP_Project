@@ -29,12 +29,16 @@ public class Test {
 
         String className = "algorithms.mazeGenerators.MyMazeGenerator";
         try {
-            IMazeGenerator generator = (IMazeGenerator) Class.forName(className).newInstance();
+            IMazeGenerator generator = (IMazeGenerator) Class.forName(className).getConstructor().newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
 

@@ -24,15 +24,15 @@ public class Server {
 
     /**
      * c'tor
-     * @param port - The given port
+     *
+     * @param port              - The given port
      * @param listeningInterval - The listening intervals
-     * @param serverStrategy - The server strategy
+     * @param serverStrategy    - The server strategy
      */
     public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
         this.port = port;
         this.listeningInterval = listeningInterval;
         this.serverStrategy = serverStrategy;
-
     }
 
     /**
@@ -89,14 +89,15 @@ public class Server {
      * This nested class implement Runnable.
      * We use this class to allow threadpool run this fonction in this class.
      */
-    class ParallelServer implements Runnable{
+    class ParallelServer implements Runnable {
 
         private Socket clientSocket;//The serverSocket
         private IServerStrategy serverStrategy;//The strategy
 
         /**
          * c'tor
-         * @param socket - The given server socket
+         *
+         * @param socket    - The given server socket
          * @param strategy- The given strategy
          */
         public ParallelServer(Socket socket, IServerStrategy strategy) {
@@ -106,6 +107,7 @@ public class Server {
 
         /**
          * This function will handle the client using the given strategy
+         *
          * @param clientSocket - The clientSocket
          */
 
@@ -116,13 +118,16 @@ public class Server {
                 //Closing the streams of the client
                 try {
                     clientSocket.getInputStream().close();
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
                 try {
                     clientSocket.getOutputStream().close();
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
                 try {
                     clientSocket.close();
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -131,11 +136,14 @@ public class Server {
         /**
          * Summoning the handleClient function
          */
-        public void run(){
+        public void run() {
             handleClient(clientSocket);
         }
     }
 
+    /**
+     * This class will represent the work the server can do with the configuration file
+     */
     static class Configurations {
         private static String PATH = "Resources/config.properties";
         private static Properties prop = new Properties();
@@ -145,6 +153,12 @@ public class Server {
         private Configurations() {
         }
 
+        /**
+         * This function will able the server to set/enter a property in/to the configuration file
+         *
+         * @param key   - the key in the updated/new property
+         * @param value - the value in the updated/new property
+         */
         public static void setProperty(PROPERTIES key, String value) {
             OutputStream output = null;
 
@@ -159,7 +173,7 @@ public class Server {
 
             } catch (IOException io) {
                 io.printStackTrace();
-            } finally {
+            } finally { /*Safe close of the streams */
                 if (output != null) {
                     try {
                         output.close();
@@ -170,15 +184,15 @@ public class Server {
             }
         }
 
+        /**
+         * @param key - the key in the property pair
+         * @return the value of the property defined by the given key
+         */
         public static String getProperty(PROPERTIES key) {
             InputStream input = null;
             String value = null;
             try {
                 input = new FileInputStream(PATH);
-//                if (input == null) {
-//                    System.out.println("Sorry, unable to find " + PATH);
-//                    return null;
-//                }
 
                 //load a properties file from class path, inside static method
                 prop.load(input);
@@ -189,7 +203,7 @@ public class Server {
 
             } catch (IOException ex) {
                 ex.printStackTrace();
-            } finally {
+            } finally { /*Safe close of the stream */
                 if (input != null) {
                     try {
                         input.close();

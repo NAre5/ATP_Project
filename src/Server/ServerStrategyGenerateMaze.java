@@ -29,7 +29,7 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
             outputStream = new ObjectOutputStream(outToClient);
             outputStream.flush();
             int[] size_Coordinates = (int[]) inputStream.readObject(); // read dimension of the maze from client.
-            IMazeGenerator generator = (IMazeGenerator) Class.forName(Server.Configurations.getProperty(Server.Configurations.PROPERTIES.MAZE_GENERATION_ALGORITHM)).newInstance();//generate maze accorging to the dimension
+            IMazeGenerator generator = (IMazeGenerator) Class.forName(Server.Configurations.getProperty(Server.Configurations.PROPERTIES.MAZE_GENERATION_ALGORITHM)).getConstructor().newInstance();//generate maze according to the dimensions
             Maze maze = generator.generate(size_Coordinates[0], size_Coordinates[1]);
             ByteArrayOutputStream byteOut = new ByteArrayOutputStream();//Stream to write byte array.
             MyCompressorOutputStream out = new MyCompressorOutputStream(byteOut);
