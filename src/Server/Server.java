@@ -1,11 +1,15 @@
 package Server;
 
+import java.io.*;
+import java.net.*;
+import java.nio.file.Paths;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.Properties;
 
 
 /**
@@ -43,9 +47,11 @@ public class Server {
      * This function is responsible to get request from client and treat her.
      */
     private void runServer() {
-        //Initializing the threadPool that manage the running of the threads
-        ThreadPoolExecutor threadPoolExecutor= (ThreadPoolExecutor)Executors.newCachedThreadPool();
-        threadPoolExecutor.setCorePoolSize(Runtime.getRuntime().availableProcessors()*2);
+        //Initializing the threadPool
+
+        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+        threadPoolExecutor.setCorePoolSize(Integer.parseInt(Configurations.getProperty(Configurations.PROPERTIES.NUM_OF_THREADS)));
+//        threadPoolExecutor.setCorePoolSize(Runtime.getRuntime().availableProcessors() * 2);
         try {
             //Creating the server socket
             ServerSocket server = new ServerSocket(port);
@@ -54,9 +60,9 @@ public class Server {
             while (!stop) {
                 try {
                     //The clientSocket of the client that is connecting to the server
-                    Socket clientSocket=server.accept();
+                    Socket clientSocket = server.accept();
                     //Executing the client handler (adding the runnable to the threadPool and executing it)
-                    threadPoolExecutor.execute(new ParallelServer(clientSocket,this.serverStrategy));
+                    threadPoolExecutor.execute(new ParallelServer(clientSocket, this.serverStrategy));
                 } catch (SocketTimeoutException e) {
                     e.getStackTrace();
                 }
@@ -93,10 +99,9 @@ public class Server {
          * @param socket - The given server socket
          * @param strategy- The given strategy
          */
-        ParallelServer(Socket socket, IServerStrategy strategy)
-        {
-            clientSocket=socket;
-            serverStrategy=strategy;
+        public ParallelServer(Socket socket, IServerStrategy strategy) {
+            clientSocket = socket;
+            serverStrategy = strategy;
         }
 
         /**
@@ -126,6 +131,76 @@ public class Server {
         /**
          * Summoning the handleClient function
          */
-        public void run(){handleClient(clientSocket);}
+        public void run(){
+            handleClient(clientSocket);
+        }
+    }
+
+    static class Configurations {
+        private static String PATH = "Resources/config.properties";
+        private static Properties prop = new Properties();
+
+        enum PROPERTIES {NUM_OF_THREADS, SOLVE_ALGORITHM, MAZE_GENERATION_ALGORITHM}//static
+
+        private Configurations() {
+        }
+
+        public static void setProperty(PROPERTIES key, String value) {
+            OutputStream output = null;
+
+            try {
+                output = new FileOutputStream(PATH);
+
+                // set the properties value
+                prop.setProperty(key.name(), value);
+
+                // save properties to project root folder
+                prop.store(output, null);
+
+            } catch (IOException io) {
+                io.printStackTrace();
+            } finally {
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        public static String getProperty(PROPERTIES key) {
+            InputStream input = null;
+            String value = null;
+            try {
+                input = new FileInputStream(PATH);
+//                if (input == null) {
+//                    System.out.println("Sorry, unable to find " + PATH);
+//                    return null;
+//                }
+
+                //load a properties file from class path, inside static method
+                prop.load(input);
+
+                //get the property value and print it out
+                value = prop.getProperty(key.name());
+
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return value;
+        }
+
     }
 }

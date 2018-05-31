@@ -42,7 +42,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             } else {//if we did not solve this maze in past.
                 //Solve the maze
                 SearchableMaze searchableMaze = new SearchableMaze(maze);
-                ISearchingAlgorithm searcher = new DepthFirstSearch();
+                ISearchingAlgorithm searcher = (ISearchingAlgorithm) Class.forName(Server.Configurations.getProperty(Server.Configurations.PROPERTIES.SOLVE_ALGORITHM)).newInstance();
                 Solution solution = searcher.solve(searchableMaze);
                 outputStream = new ObjectOutputStream(new FileOutputStream(solution_file));
                 outputStream.writeObject(solution);//write the solution to new file
