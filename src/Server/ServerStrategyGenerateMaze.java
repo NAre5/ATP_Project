@@ -2,13 +2,15 @@ package Server;
 
 
 import IO.MyCompressorOutputStream;
-import algorithms.mazeGenerators.AMazeGenerator;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 
 import java.io.*;
 
+/**
+ * This class responsible for get the dimension for the maze from the client, compress it and send back to client.
+ */
 public class ServerStrategyGenerateMaze implements IServerStrategy {
 
 
@@ -20,22 +22,33 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
      */
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
+        ObjectInputStream inputStream = null;
+        ObjectOutputStream outputStream = null;
         try {
-            ObjectInputStream inputStream = new ObjectInputStream(inFromClient);
-            ObjectOutputStream outputStream = new ObjectOutputStream(outToClient);
+            inputStream = new ObjectInputStream(inFromClient);
+            outputStream = new ObjectOutputStream(outToClient);
             outputStream.flush();
-            int[] size_Coordinates = (int[])inputStream.readObject();//catch error if not int[2]
-            IMazeGenerator generator = new MyMazeGenerator();
-            Maze maze = generator.generate(size_Coordinates[0],size_Coordinates[1]);
-            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            int[] size_Coordinates = (int[]) inputStream.readObject(); // read dimension of the maze from client.
+            IMazeGenerator generator = new MyMazeGenerator();//generate maze accorging to the dimension
+            Maze maze = generator.generate(size_Coordinates[0], size_Coordinates[1]);
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();//Stream to write byte array.
             MyCompressorOutputStream out = new MyCompressorOutputStream(byteOut);
-            //or MyCompressorOutputStream outputStream = new MyCompressorOutputStream(outToClient.clone);
             out.write(maze.toByteArray());
-            outputStream.writeObject(byteOut.toByteArray());
-//
-        }catch (Exception ignored)
-        {
-
+            outputStream.writeObject(byteOut.toByteArray());//sending to client the maze.
+        } catch (Exception ignored) {
+        } finally { /*Safe close of the stream */
+            try {
+                if (inputStream != null)
+                    inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (outputStream != null)
+                    outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -120,6 +120,11 @@ public class BitInputStream extends InputStream
         }
     }
 
+    /**
+     * Estimate how many bits there is ti read.
+     * @return -1 if there is no bits to read.
+     * @throws IOException
+     */
     @Override
     public int available() throws IOException {
         return myInput.available();
