@@ -1,10 +1,7 @@
 package IO;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,7 +39,7 @@ public class MyDecompressorInputStream extends InputStream {
      * @return the total number of bytes read into the buffer, or
      *             -1 if there is no more data because the end of
      *             the stream has been reached.
-     * @throws IOException
+     * @throws IOException -
      */
     @Override
     public int read(byte[] b) throws IOException {
@@ -97,18 +94,18 @@ public class MyDecompressorInputStream extends InputStream {
                 }
                 continue;
             }
-            String byteAsString = Integer.toBinaryString(_byte & 0xFF);
+            StringBuilder byteAsString = new StringBuilder(Integer.toBinaryString(_byte & 0xFF));
             while (byteAsString.length() != 8)
-                byteAsString = '0' + byteAsString;
-            char[] byteAsArray = byteAsString.toCharArray();
+                byteAsString.insert(0, '0');
+            char[] byteAsArray = byteAsString.toString().toCharArray();
             for (int j = 0; j < 8; j++) {
                 b[index++] = (byte) (byteAsArray[j] - 48);
             }
         }
-        String byteAsString = Integer.toBinaryString(before_last & 0xFF);
+        StringBuilder byteAsString = new StringBuilder(Integer.toBinaryString(before_last & 0xFF));
         while (byteAsString.length() != 8)
-            byteAsString = '0' + byteAsString;
-        char[] byteAsArray = byteAsString.toCharArray();
+            byteAsString.insert(0, '0');
+        char[] byteAsArray = byteAsString.toString().toCharArray();
         for (int j = 0; j < last; j++) {
             b[index++] = (byte) (byteAsArray[j] - 48);
 

@@ -109,9 +109,15 @@ public class Server {
                 //Implementing the strategy
                 serverStrategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
                 //Closing the streams of the client
-                clientSocket.getInputStream().close();
-                clientSocket.getOutputStream().close();
-                clientSocket.close();
+                try {
+                    clientSocket.getInputStream().close();
+                }catch (Exception e){}
+                try {
+                    clientSocket.getOutputStream().close();
+                }catch (Exception e){}
+                try {
+                    clientSocket.close();
+                }catch (Exception e){}
             } catch (IOException e) {
                 e.printStackTrace();
             }
