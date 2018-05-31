@@ -2,7 +2,6 @@ package test;
 
 import IO.BitInputStream;
 import IO.BitOutputStream;
-import IO.Encoder;
 import IO.HuffmanTree;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
