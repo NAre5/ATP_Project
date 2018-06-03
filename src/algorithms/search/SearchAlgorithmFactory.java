@@ -1,20 +1,16 @@
 package algorithms.search;
 
+import algorithms.mazeGenerators.IMazeGenerator;
+
 public class SearchAlgorithmFactory {
     private SearchAlgorithmFactory(){}
-    public static ISearchingAlgorithm create_search_algorithm(String className)
-    {
-        switch (className)
+    public static ISearchingAlgorithm createAlgorithm(String className) {
+        try{
+            return (ISearchingAlgorithm)Class.forName("algorithms.search." + className).getConstructor().newInstance();
+        }catch (Exception e)
         {
-            case "DepthFirstSearch":
-                new DepthFirstSearch();
-            case "BreadthFirstSearch":
-                new BreadthFirstSearch();
-            case "BestFirstSearch":
-                new BestFirstSearch();
-            default:
-                throw new IllegalArgumentException("className should be real class name that implements ISearchingAlgorithm");
-
+            throw new IllegalArgumentException("Illegal className: should be class that implements ISearchingAlgorithm");
         }
     }
+
 }

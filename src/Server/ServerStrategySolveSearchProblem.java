@@ -3,7 +3,6 @@ package Server;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
-
 import java.io.*;
 
 /**
@@ -13,7 +12,6 @@ import java.io.*;
  * if this maze was sending in the past we just read the solution from the file and send back.
  */
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
-
 
     /**
      * This function will apply a server strategy
@@ -42,7 +40,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             } else {//if we did not solve this maze in past.
                 //Solve the maze
                 SearchableMaze searchableMaze = new SearchableMaze(maze);
-                ISearchingAlgorithm searcher = (ISearchingAlgorithm) Class.forName(Server.Configurations.getProperty(Server.Configurations.PROPERTIES.SOLVE_ALGORITHM)).getConstructor().newInstance();
+                ISearchingAlgorithm searcher = (ISearchingAlgorithm) Server.Configurations.getProperty(Server.Configurations.PROPERTIES.SOLVE_ALGORITHM);
                 Solution solution = searcher.solve(searchableMaze);
                 outputStream = new ObjectOutputStream(new FileOutputStream(solution_file));
                 outputStream.writeObject(solution);//write the solution to new file

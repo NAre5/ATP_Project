@@ -5,14 +5,12 @@ public class GeneratorFactory {
     }
 
     public static IMazeGenerator createGenerator(String className) {
-        switch (className) {
-            case "MyMazeGenerator":
-                return new MyMazeGenerator();
-            case "SimpleMazeGenerator":
-                return new SimpleMazeGenerator();
-            default:
-                throw new IllegalArgumentException("className should be real class name that implements IMazeGenerator");
-
+        try{
+            return (IMazeGenerator)Class.forName("algorithms.mazeGenerators." + className).getConstructor().newInstance();
+        }catch (Exception e)
+        {
+            throw new IllegalArgumentException("Illegal className: should be class that implements IMazeGenerator");
         }
     }
+
 }
