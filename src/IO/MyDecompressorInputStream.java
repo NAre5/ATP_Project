@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,15 +66,12 @@ public class MyDecompressorInputStream extends InputStream {
         bitInputStream.close();
         BitOutputStream bitOutputStream2 = new BitOutputStream(filename);
         bitOutputStream2.flush();
-//        BitOutputStream bitOutputStream2 = new BitOutputStream(filename + "2");
         int code_size = 0;
         for (i = i + size; i < len - 2; i++) {
-//            System.out.println(b[i]);
             bitOutputStream2.writeBits(8, b[i] & 0xFF);
             code_size += 8;
         }
-//        System.out.println((b[i] & 0xFF) >> ((8 - (b[i + 1] & 0xFF)) & 0xFF));
-//        System.out.println(b[i + 1]);
+
         bitOutputStream2.writeBits(b[i + 1] == 0 ? 8 : b[i + 1], (b[i] & 0xFF) >> ((8 - (b[i + 1] == 0 ? 8 : b[i + 1]) & 0xFF)) & 0xFF);
         code_size += b[i + 1] == 0 ? 8 : b[i + 1];
         bitOutputStream2.close();

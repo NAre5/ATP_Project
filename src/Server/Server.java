@@ -1,5 +1,8 @@
 package Server;
 
+import algorithms.mazeGenerators.GeneratorFactory;
+import algorithms.search.SearchAlgorithmFactory;
+
 import java.io.*;
 import java.net.*;
 import java.nio.file.Paths;
@@ -50,7 +53,7 @@ public class Server {
         //Initializing the threadPool
 
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-        threadPoolExecutor.setCorePoolSize(Integer.parseInt(Configurations.getProperty(Configurations.PROPERTIES.NUM_OF_THREADS)));
+        threadPoolExecutor.setCorePoolSize((Integer)Configurations.getProperty(Configurations.PROPERTIES.NUM_OF_THREADS));
 //        threadPoolExecutor.setCorePoolSize(Runtime.getRuntime().availableProcessors() * 2);
         try {
             //Creating the server socket
@@ -148,7 +151,25 @@ public class Server {
         private static String PATH = "Resources/config.properties";
         private static Properties prop = new Properties();
 
-        enum PROPERTIES {NUM_OF_THREADS, SOLVE_ALGORITHM, MAZE_GENERATION_ALGORITHM}//static
+        enum PROPERTIES {
+            NUM_OF_THREADS, SOLVE_ALGORITHM, MAZE_GENERATION_ALGORITHM;
+
+            private static Object getObject(PROPERTIES p, String value) {
+                switch (p) {
+                    case NUM_OF_THREADS:
+                        if (Integer.parseInt(value)>0)
+                            return Integer.parseInt(value);
+                        else
+                            throw new IllegalArgumentException("Illegal property");
+                    case MAZE_GENERATION_ALGORITHM:
+                        return GeneratorFactory.createGenerator(value);
+                    case SOLVE_ALGORITHM:
+                        return SearchAlgorithmFactory.createAlgorithm(value);
+                    default:
+                        throw new IllegalArgumentException("Illegal property");
+                }
+            }
+        }//static
 
         private Configurations() {
         }
@@ -166,6 +187,13 @@ public class Server {
                 output = new FileOutputStream(PATH);
 
                 // set the properties value
+                try {
+                    PROPERTIES.getObject(key, value);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
                 prop.setProperty(key.name(), value);
 
                 // save properties to project root folder
@@ -186,11 +214,11 @@ public class Server {
 
         /**
          * @param key - the key in the property pair
-         * @return the value of the property defined by the given key
+         * @return the value(as Object) of the property defined by the given key
          */
-        public static String getProperty(PROPERTIES key) {
+        public static Object getProperty(PROPERTIES key) {
             InputStream input = null;
-            String value = null;
+            Object value = null;
             try {
                 input = new FileInputStream(PATH);
 
@@ -198,8 +226,7 @@ public class Server {
                 prop.load(input);
 
                 //get the property value and print it out
-                value = prop.getProperty(key.name());
-
+                value = PROPERTIES.getObject(key,prop.getProperty(key.name()));
 
             } catch (IOException ex) {
                 ex.printStackTrace();
