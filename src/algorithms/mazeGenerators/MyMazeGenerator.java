@@ -74,6 +74,7 @@ public class MyMazeGenerator extends AMazeGenerator {
             }
 
         }
+
         return new Maze(maze, start, last);
     }
 
