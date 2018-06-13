@@ -147,11 +147,11 @@ public class Server {
     /**
      * This class will represent the work the server can do with the configuration file
      */
-    static class Configurations {
+    public static class Configurations {
         private static String PATH = "Resources/config.properties";
         private static Properties prop = new Properties();
 
-        enum PROPERTIES {
+        public enum PROPERTIES {
             NUM_OF_THREADS, SOLVE_ALGORITHM, MAZE_GENERATION_ALGORITHM;
 
             private static Object getObject(PROPERTIES p, String value) {

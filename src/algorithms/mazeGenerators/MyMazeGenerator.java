@@ -18,10 +18,9 @@ public class MyMazeGenerator extends AMazeGenerator {
      */
     @Override
     public Maze generate(int rows, int columns) {
-        if (rows <= 0 || columns <= 0) {
-            System.out.println("Maze size must be positive. 3X3 default maze has been created.");
-            rows = 3;
-            columns = 3;
+        if (rows <= 5 || columns <= 5) {
+            IMazeGenerator simple = new SimpleMazeGenerator();
+            return simple.generate(rows, columns);
         }
         int[][] maze = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
@@ -62,7 +61,9 @@ public class MyMazeGenerator extends AMazeGenerator {
 
                         // store last node in order to mark it later
                         if ((opposite.getRowIndex() == 0 || opposite.getRowIndex() == rows - 1) || (opposite.getColumnIndex() == 0 || opposite.getColumnIndex() == columns - 1))
-                            last = opposite.clone();
+                            if (last != null && ((Math.pow(opposite.getRowIndex() - start.getRowIndex(), 2) + Math.pow(opposite.getColumnIndex() - start.getColumnIndex(), 2)) > (Math.pow(last.getRowIndex() - start.getRowIndex(), 2) + Math.pow(last.getColumnIndex() - start.getColumnIndex(), 2))))
+                                last = opposite.clone();
+
                         // iterate through direct neighbors of node, same as earlier
 
                         for (Position position : getCloseWalls(maze, opposite)) {

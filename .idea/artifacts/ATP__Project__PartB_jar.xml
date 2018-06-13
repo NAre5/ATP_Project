@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ATP – Project – PartB:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ATP__Project__PartB_jar</output-path>
+    <root id="archive" name="ATP – Project – PartB.jar">
+      <element id="module-output" name="ATP – Project – PartB" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/plugins/junit/lib/junit-jupiter-api-5.0.0-M4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/plugins/junit/lib/opentest4j-1.0.0-M2.jar" path-in-jar="/" />
+      <element id="library" level="module" name="JUnit5.0" module-name="ATP – Project – PartB" />
+    </root>
+  </artifact>
+</component>
